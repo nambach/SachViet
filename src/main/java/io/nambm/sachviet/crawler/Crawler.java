@@ -61,9 +61,8 @@ public class Crawler {
         //ITERATE ALL URLs
         for (int i = 0; i < rules.getRule().size(); i++) {
             Rule rule = rules.getRule().get(i);
-            System.out.println();
-//            System.out.println(rule.getSiteName());
-//            System.out.println(rule.getName());
+
+            Item itemRule = rule.getItem();
 
             //ITERATE ALL PAGES IN ONE URL
             for (int pageNo = Integer.parseInt(rule.getIncrementFrom()); pageNo <= Integer.parseInt(rule.getIncrementTo()); pageNo++) {
@@ -92,11 +91,13 @@ public class Crawler {
 
                 NodeList collection = DomUtils.evaluateNode(fragment, rule.getCollectionXpath(), NodeList.class);
 
-                Item itemRule = rule.getItem();
+                if (collection == null || collection.getLength() == 0) {
+                    break;
+                }
 
                 List<Map<String, String>> batch = new LinkedList<>();
                 collectionLoop:
-                for (int j = 0; j < (collection != null ? collection.getLength() : 0); j++) {
+                for (int j = 0; j < collection.getLength(); j++) {
                     Node item = collection.item(j);
 
                     Map<String, String> obj = new HashMap<>();
@@ -117,11 +118,9 @@ public class Crawler {
                     }
 
                     results.add(obj);
-                    batch.add(obj);
 //                    System.out.println(obj);
+                    repository.insert(RawBook.convert(obj));
                 }
-
-                repository.insertBatch(RawBook.convert(batch));
 
                 //End of some code for iterate pages
             }

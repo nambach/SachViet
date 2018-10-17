@@ -46,7 +46,7 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -57,7 +57,7 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
 
             for (int i = 0; i < entities.size(); i++) {
                 session.save(entities.get(i));
-                if (i % 50 == 0) { // Same as the JDBC batch size
+                if (i % 10 == 0) { // Same as the JDBC batch size
                     //flush a batch of inserts and release memory:
                     session.flush();
                     session.clear();
@@ -83,7 +83,7 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -110,7 +110,7 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

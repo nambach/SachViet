@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 public class FileUtils {
 
     public static String EMPTY_CONTENT = "";
-    public static String LOCATION = "src/main/resources/static";
+    public static String LOCATION = "src/main/resources/static/";
 
     public static String readTextContent(String filePath) {
         StringBuilder result = new StringBuilder(EMPTY_CONTENT);
