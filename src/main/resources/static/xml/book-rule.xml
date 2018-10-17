@@ -21,7 +21,8 @@
             <detailXpath detailName="authors">*//span[contains(@class, "author")]/text()</detailXpath>
             <detailXpath detailName="oldPrice">*//div[contains(@class, "price-wrap")]//span[contains(@class, "list-price")]/text()</detailXpath>
             <detailXpath detailName="price">*//div[contains(@class, "price-wrap")]//span[contains(@class, "price-num")]/text()</detailXpath>
-            <detailXpath detailName="status">*//span[contains(@class, "qty-out-of-stock")]/text()</detailXpath>
+            <detailXpath detailName="discountRate">*//span[contains(@class, "thumb-discount-label")]/text()</detailXpath>
+            <detailXpath detailName="status">boolean(1 - boolean(*//span[contains(@class, "qty-out-of-stock")]/text()))</detailXpath>
         </item>
     </rule>
     <rule>
@@ -31,7 +32,7 @@
         <basedUrl>https://www.vinabook.com/</basedUrl>
         <incrementParam>?page={i}</incrementParam>
         <incrementFrom>1</incrementFrom>
-        <incrementTo>1</incrementTo>
+        <incrementTo>0</incrementTo>
         <fragmentJsQuerySelector> </fragmentJsQuerySelector>
         <fragmentXpath>//table[contains(@class, "template-products")]</fragmentXpath>
         <collectionXpath>*//td[contains(@class, "compact")]</collectionXpath>
@@ -43,7 +44,8 @@
             <detailXpath detailName="authors">*//span[contains(@class, "author")]/text()</detailXpath>
             <detailXpath detailName="oldPrice">*//div[contains(@class, "price-wrap")]//span[contains(@class, "list-price")]/text()</detailXpath>
             <detailXpath detailName="price">*//div[contains(@class, "price-wrap")]//span[contains(@class, "price-num")]/text()</detailXpath>
-            <detailXpath detailName="status">*//span[contains(@class, "qty-out-of-stock")]/text()</detailXpath>
+            <detailXpath detailName="discountRate">*//span[contains(@class, "thumb-discount-label")]/text()</detailXpath>
+            <detailXpath detailName="status">boolean(1 - boolean(*//span[contains(@class, "qty-out-of-stock")]/text()))</detailXpath>
         </item>
     </rule>
 
@@ -53,8 +55,8 @@
         <url>https://pibook.vn/sach-pibook-khuyen-doc</url>
         <basedUrl>https://pibook.vn/</basedUrl>
         <incrementParam>?page={i}</incrementParam>
-        <incrementFrom>1</incrementFrom>
-        <incrementTo>0</incrementTo>
+        <incrementFrom>5</incrementFrom>
+        <incrementTo>100</incrementTo>
         <fragmentJsQuerySelector>div.dmslider</fragmentJsQuerySelector>
         <fragmentXpath>//div[contains(@class, "dmslider")]</fragmentXpath>
         <collectionXpath>*//li</collectionXpath>
@@ -66,6 +68,7 @@
             <detailXpath detailName="authors">x/text()</detailXpath>
             <detailXpath detailName="oldPrice">div[contains(@class, "priceold")]/text()</detailXpath>
             <detailXpath detailName="price">div[contains(@class, "price1")]/text()</detailXpath>
+            <detailXpath detailName="discountRate">div[contains(@style, "absolute")]/text()</detailXpath>
             <detailXpath detailName="status">boolean(p[@align='center']/a)</detailXpath>
         </item>
     </rule>

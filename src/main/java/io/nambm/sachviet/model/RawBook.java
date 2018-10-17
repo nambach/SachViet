@@ -39,6 +39,8 @@ public class RawBook implements GenericEntity {
     private String price;
     @Column(name = "`oldPrice`")
     private String oldPrice;
+    @Column(name = "`discountRate`")
+    private String discountRate;
 
     //Status
     @Column(name = "`status`")
@@ -47,7 +49,7 @@ public class RawBook implements GenericEntity {
     public RawBook() {
     }
 
-    public RawBook(String id, String siteName, String title, String authors, String image, String link, String price, String oldPrice, String status) {
+    public RawBook(String id, String siteName, String title, String authors, String image, String link, String price, String oldPrice, String discountRate, String status) {
         this.id = id;
         this.siteName = siteName;
         this.title = title;
@@ -56,6 +58,7 @@ public class RawBook implements GenericEntity {
         this.link = link;
         this.price = price;
         this.oldPrice = oldPrice;
+        this.discountRate = discountRate;
         this.status = status;
     }
 
@@ -115,6 +118,14 @@ public class RawBook implements GenericEntity {
         this.oldPrice = oldPrice;
     }
 
+    public String getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(String discountRate) {
+        this.discountRate = discountRate;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -160,9 +171,10 @@ public class RawBook implements GenericEntity {
         String link = obj.getOrDefault("link", "");
         String price = obj.getOrDefault("price", "");
         String oldPrice = obj.getOrDefault("oldPrice", "");
+        String discountRate = obj.getOrDefault("discountRate", "");
         String status = obj.getOrDefault("status", "");
 
-        return new RawBook(id, siteName, title, authors, image, link, price, oldPrice, status);
+        return new RawBook(id, siteName, title, authors, image, link, price, oldPrice, discountRate, status);
     }
 
     public static List<RawBook> convert(List<Map<String, String>> list) {
