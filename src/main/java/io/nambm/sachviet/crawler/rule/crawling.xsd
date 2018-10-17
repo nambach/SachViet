@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="http://nambm.io/crawling-rule"
+           xmlns="http://nambm.io/crawling-rule"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="rules" type="rules"/>
+
+  <xs:complexType name="rules">
+    <xs:sequence>
+      <xs:element type="rule" name="rule" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="rule">
+    <xs:sequence>
+      <xs:element type="xs:string" name="siteName"/>
+      <xs:element type="xs:string" name="name"/>
+      <xs:element type="xs:string" name="url"/>
+      <xs:element type="xs:string" name="basedUrl"/>
+      <xs:element type="xs:string" name="incrementParam"/>
+      <xs:element type="xs:string" name="incrementFrom"/>
+      <xs:element type="xs:string" name="incrementTo"/>
+      <xs:element type="xs:string" name="fragmentJsQuerySelector"/>
+      <xs:element type="xs:string" name="fragmentXpath"/>
+      <xs:element type="xs:string" name="collectionXpath"/>
+      <xs:element type="item" name="item"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="item">
+    <xs:sequence>
+      <xs:element type="itemDetail" name="detailXpath" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="itemDetail">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="detailName" type="xs:string"/>
+        <xs:attribute name="prefix" type="xs:string" default=""/>
+        <xs:attribute name="postfix" type="xs:string" default=""/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>
