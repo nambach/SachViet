@@ -39,6 +39,11 @@ public class Crawler {
         repository = new RawBookRepositoryImpl(GenericRepositoryImpl.getFactory());
     }
 
+    public Crawler(Rules rules) {
+        this.rules = rules;
+        repository = new RawBookRepositoryImpl(GenericRepositoryImpl.getFactory());
+    }
+
     public List<Map<String, String>> getResults() {
         if (results == null) {
             results = new LinkedList<>();
