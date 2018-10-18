@@ -9,8 +9,10 @@ function ready(fn) {
 function callAjax(url, method, data, async = true, success = () => {}, fail = () => {}) {
     let request = new XMLHttpRequest();
 
-    if (method === GET) {
-        url = url + "?" + convertObjectIntoParams(data);
+    data = convertObjectIntoParams(data);
+
+    if (method === GET && data !== "") {
+        url = url + "?" + data;
     }
 
     request.open(method, url, async);
@@ -35,7 +37,11 @@ function callAjax(url, method, data, async = true, success = () => {}, fail = ()
         }
     };
 
-    request.send(convertObjectIntoParams(data));
+    if (data === "") {
+        request.send();
+    } else  {
+        request.send(data);
+    }
 }
 
 function convertObjectIntoParams(object) {
