@@ -1,0 +1,52 @@
+a {
+    color: inherit;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.box-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+.box-shadow:hover {
+    box-shadow: 0 8px 16px 0 #54cbf6;
+}
+.scroll-list {
+    overflow:hidden;
+    overflow-y:scroll;
+}
+.vertical-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.vertical-center-children>* {
+    display: flex;
+    align-items: center;
+}
+.horizontal-center {
+    text-align: center;
+}
+.hidden {
+    display: none;
+}
+
+
+/*For PAGING*/
+.pagination {
+    font-size: 12px;
+    float: right;
+    margin-right: 20px;
+}
+.pagination>a {
+    border: 1px solid #e1e1e1;
+    padding: 4px 8px;
+    margin: 0 2px;
+}
+.pagination>a:hover {
+    background-color: #2aaac9;
+    color: white;
+    text-decoration: none;
+}

@@ -25,7 +25,7 @@ public class LoginControllerImpl implements LoginController {
 
     @GetMapping("/home")
     public ModelAndView home() {
-        return new ModelAndView("home/home");
+        return new ModelAndView("search/search");
     }
 
     @PostMapping("/login")

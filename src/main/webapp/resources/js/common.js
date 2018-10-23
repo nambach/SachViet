@@ -56,3 +56,9 @@ function convertObjectIntoParams(object) {
     return arr.join("&");
 }
 
+function clearChildNodes(node) {
+    while (node.firstChild) {
+        node.removeChild(node.firstChild);
+    }
+}
+
