@@ -33,6 +33,23 @@ a:hover {
     display: none;
 }
 
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+.noselect-all * {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
 
 /*For PAGING*/
 .pagination {
@@ -49,4 +66,15 @@ a:hover {
     background-color: #2aaac9;
     color: white;
     text-decoration: none;
+}
+.pagination .selected {
+    background: #99d1d5;
+    color: #438395;
+}
+.pagination a[data-type$='Stub'] {
+    color: #c7c7c7;
+}
+.pagination a[data-type$='Stub']:hover {
+    cursor: not-allowed;
+    background-color: inherit;
 }

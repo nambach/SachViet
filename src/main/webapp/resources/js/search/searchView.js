@@ -16,6 +16,9 @@ let searchView = {
 
         self.templateBookItem = document.querySelector("[data-book-template]");
         self.containerResult = document.querySelector("div.book-list");
+
+        paginationView.init(self.renderSearchResult);
+        paginationView.bindElements();
     },
 
     bindElements() {
@@ -28,7 +31,10 @@ let searchView = {
 
             searchModel.search(
                 self.txtSearch.value.trim(),
-                self.renderSearchResult);
+                (data) => {
+                    paginationView.setDataSource(data);
+                    paginationView.trigger();
+                });
         }
 
         self.txtSearch.addEventListener("keyup", (e) => {
@@ -43,6 +49,7 @@ let searchView = {
         self.btnClearSearch.addEventListener("click", () => {
             self.txtSearch.value = "";
             self.btnClearSearch.classList.add("hidden");
+            self.txtSearch.focus();
         });
         self.btnSearch.addEventListener("click", search);
     },

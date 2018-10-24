@@ -84,14 +84,22 @@
             <p>
                 <span style="font-weight: bold">Kết quả tìm kiếm:</span>
                 &nbsp; Có 100,000 kết quả cho sản phẩm này
-                <span class="pagination">
-                    <a>&#171;</a>
-                    <a>1</a>
-                    <a>2</a>
-                    <a>3</a>
-                    ...
-                    <a>&#187;</a>
-                    <a>Last</a>
+                <span class="pagination noselect-all">
+                    <a data-type="btnFirst">&#171;</a>
+                    <a data-type="btnFirstStub" class="hidden">&#171;</a>
+
+                    <a data-type="btnPrev">&#8249;</a>
+                    <a data-type="btnPrevStub" class="hidden">&#8249;</a>
+
+                    <a data-type="btn1">1</a>
+                    <a data-type="btn2">2</a>
+                    <a data-type="btn3">3</a>
+
+                    <a data-type="btnNext">&#8250;</a>
+                    <a data-type="btnNextStub" class="hidden">&#8250;</a>
+
+                    <a data-type="btnLast">&#187;</a>
+                    <a data-type="btnLastStub" class="hidden">&#187;</a>
                 </span>
             </p>
         </div>
@@ -114,6 +122,7 @@
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/constant.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/common.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/pagination.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/search/searchModel.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/search/searchView.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/search/searchOctopus.js"></script>

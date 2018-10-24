@@ -62,3 +62,8 @@ function clearChildNodes(node) {
     }
 }
 
+function divide(a, b) {
+    if (isNaN(a) || isNaN(b)) return 0;
+    return Math.floor(a / b);
+}
+
