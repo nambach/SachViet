@@ -96,7 +96,7 @@ let paginationView = {
     },
 
     trigger() {
-        paginationView.pagination.one.dispatchEvent(new Event("click"));
+        paginationView.pagination.first.dispatchEvent(new Event("click"));
     },
 
     directPage() {
