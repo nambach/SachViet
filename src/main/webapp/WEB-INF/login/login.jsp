@@ -5,25 +5,23 @@
   Time: 7:59 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Login</title>
-    <link rel="stylesheet"/>
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
 </head>
 <body>
-<form name="login-form">
-    Username <input type="text" name="username"> <br/>
-    Password <input type="password" name="password"> <br/>
-    <span class="loginMessage hidden" style="color: red">Invalid username or password</span> <br/>
-    <input type="button" value="Login" name="btnLogin">
-    <input type="reset" value="Reset">
-</form>
+<div class="form box-shadow">
+    <div class="title center"><h3>Hệ thống quản trị Sách Việt</h3></div>
+    <div class="input center">
+        <input type="text" name="username" placeholder="Tên đăng nhập"/>
+        <input type="password" name="password" placeholder="Mật khẩu"/>
+        <button name="btnLogin">Đăng nhập</button>
+    </div>
+</div>
+<div class="loginMessage hidden">Tài khoản hoặc mật khẩu không hợp lệ</div>
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/constant.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/common.js"></script>

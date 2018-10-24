@@ -106,7 +106,7 @@
 
         <div class="book-list" >
             <div class="book-item hidden" data-book-template>
-                <img class="box-shadow"
+                <img class="box-shadow box-shadow-hover"
                      src=""
                      alt="" title=""/>
                 <div class="book-title"><a href="#" title="" target="_blank" rel="noopener noreferrer"></a></div>
