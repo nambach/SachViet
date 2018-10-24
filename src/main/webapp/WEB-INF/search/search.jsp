@@ -119,6 +119,8 @@
         </div>
     </div>
 </div>
+
+<div class="loader hidden"><div></div></div>
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/constant.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/common.js"></script>

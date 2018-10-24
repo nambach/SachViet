@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
 </head>
 <body>
+<div class="loader hidden"><div></div></div>
 <div class="form box-shadow">
     <div class="title center"><h3>Hệ thống quản trị Sách Việt</h3></div>
     <div class="input center">

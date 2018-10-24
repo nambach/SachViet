@@ -7,6 +7,8 @@ function ready(fn) {
 }
 
 function callAjax(url, method, data, async = true, success = () => {}, fail = () => {}) {
+    showLoader();
+
     let request = new XMLHttpRequest();
 
     data = convertObjectIntoParams(data);
@@ -22,6 +24,8 @@ function callAjax(url, method, data, async = true, success = () => {}, fail = ()
         if (request.readyState !== 4) {
             return;
         }
+
+        hideLoader();
 
         let resp = request.responseText;
         if (request.status >= 200 && request.status < 400) {
@@ -71,4 +75,12 @@ function removeNode(node) {
     if (node) {
         node.parentNode.removeChild(node);
     }
+}
+
+function showLoader() {
+    document.querySelector("div.loader").classList.remove("hidden");
+}
+
+function hideLoader() {
+    document.querySelector("div.loader").classList.add("hidden");
 }
