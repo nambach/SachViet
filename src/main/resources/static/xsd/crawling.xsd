@@ -13,19 +13,39 @@
   </xs:complexType>
 
   <xs:complexType name="rule">
-    <xs:sequence>
+    <xs:all>
       <xs:element type="xs:string" name="siteName"/>
-      <xs:element type="xs:string" name="name"/>
-      <xs:element type="xs:string" name="url"/>
       <xs:element type="xs:string" name="basedUrl"/>
-      <xs:element type="xs:string" name="incrementParam"/>
-      <xs:element type="xs:string" name="incrementFrom"/>
-      <xs:element type="xs:string" name="incrementTo"/>
-      <xs:element type="xs:string" name="fragmentJsQuerySelector"/>
-      <xs:element type="xs:string" name="fragmentXpath"/>
+      <xs:element type="topicList" name="topics"/>
       <xs:element type="xs:string" name="collectionXpath"/>
       <xs:element type="item" name="item"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="topicList">
+    <xs:sequence>
+      <xs:element type="topicType" name="topic" maxOccurs="unbounded"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="topicType">
+    <xs:all>
+      <xs:element type="xs:string" name="topicName"/>
+      <xs:element type="xs:string" name="topicCode"/>
+      <xs:element type="urlType" name="url"/>
+      <xs:element type="xs:string" name="fragmentXpath"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="urlType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="incrementParam" type="xs:string" default=""/>
+        <xs:attribute name="from" type="xs:string" default="1"/>
+        <xs:attribute name="to" type="xs:string" default="1"/>
+        <xs:attribute name="step" type="xs:string" default="1"/>
+      </xs:extension>
+    </xs:simpleContent>
   </xs:complexType>
 
   <xs:complexType name="item">
@@ -40,6 +60,7 @@
         <xs:attribute name="detailName" type="xs:string"/>
         <xs:attribute name="prefix" type="xs:string" default=""/>
         <xs:attribute name="postfix" type="xs:string" default=""/>
+        <xs:attribute name="isRequired" type="xs:boolean" default="false"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>

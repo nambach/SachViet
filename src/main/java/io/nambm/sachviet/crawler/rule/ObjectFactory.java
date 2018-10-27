@@ -42,6 +42,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UrlType }
+     * 
+     */
+    public UrlType createUrlType() {
+        return new UrlType();
+    }
+
+    /**
      * Create an instance of {@link Item }
      * 
      */
@@ -63,6 +71,22 @@ public class ObjectFactory {
      */
     public ItemDetail createItemDetail() {
         return new ItemDetail();
+    }
+
+    /**
+     * Create an instance of {@link TopicList }
+     * 
+     */
+    public TopicList createTopicList() {
+        return new TopicList();
+    }
+
+    /**
+     * Create an instance of {@link TopicType }
+     * 
+     */
+    public TopicType createTopicType() {
+        return new TopicType();
     }
 
     /**

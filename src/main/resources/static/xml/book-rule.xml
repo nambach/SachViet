@@ -4,40 +4,24 @@
        xsi:schemaLocation="http://nambm.io/crawling-rule ../xsd/crawling.xsd">
     <rule>
         <siteName>Vinabook</siteName>
-        <name>Sách vừa phát hành trong tuần</name>
-        <url>https://www.vinabook.com/sach-moi-phat-hanh</url>
         <basedUrl>https://www.vinabook.com/</basedUrl>
-        <incrementParam>?page={i}</incrementParam>
-        <incrementFrom>1</incrementFrom>
-        <incrementTo>0</incrementTo>
-        <fragmentJsQuerySelector> </fragmentJsQuerySelector>
-        <fragmentXpath>//table[contains(@class, "template-products")]</fragmentXpath>
+        <topics>
+            <topic>
+                <topicName>Sách vừa phát hành trong tuần</topicName>
+                <topicCode>newArr</topicCode>
+                <url incrementParam="?page={i}" to="0">https://www.vinabook.com/sach-moi-phat-hanh</url>
+                <fragmentXpath>//table[contains(@class, "template-products")]</fragmentXpath>
+            </topic>
+            <topic>
+                <topicName>Kho Sách Giảm Giá</topicName>
+                <topicCode>sale</topicCode>
+                <url incrementParam="?page={i}" to="0">https://www.vinabook.com/kho-sach-giam-gia</url>
+                <fragmentXpath>//table[contains(@class, "template-products")]</fragmentXpath>
+            </topic>
+        </topics>
         <collectionXpath>*//td[contains(@class, "compact")]</collectionXpath>
         <item>
-            <detailXpath detailName="id" prefix="VNB_">*//input[contains(@name, 'product_id')]/@value</detailXpath>
-            <detailXpath detailName="title">*//a[contains(@class, "product-title")]/text()</detailXpath>
-            <detailXpath detailName="link">*//a[contains(@class, "product-title")]/@href</detailXpath>
-            <detailXpath detailName="image">*//a[contains(@class, "image-border")]//img/@data-src</detailXpath>
-            <detailXpath detailName="authors">*//span[contains(@class, "author")]/text()</detailXpath>
-            <detailXpath detailName="oldPrice">*//div[contains(@class, "price-wrap")]//span[contains(@class, "list-price")]/text()</detailXpath>
-            <detailXpath detailName="price">*//div[contains(@class, "price-wrap")]//span[contains(@class, "price-num")]/text()</detailXpath>
-            <detailXpath detailName="discountRate">*//span[contains(@class, "thumb-discount-label")]/text()</detailXpath>
-            <detailXpath detailName="status">boolean(1 - boolean(*//span[contains(@class, "qty-out-of-stock")]/text()))</detailXpath>
-        </item>
-    </rule>
-    <rule>
-        <siteName>Vinabook</siteName>
-        <name>Kho Sách Giảm Giá</name>
-        <url>https://www.vinabook.com/kho-sach-giam-gia</url>
-        <basedUrl>https://www.vinabook.com/</basedUrl>
-        <incrementParam>?page={i}</incrementParam>
-        <incrementFrom>1</incrementFrom>
-        <incrementTo>0</incrementTo>
-        <fragmentJsQuerySelector> </fragmentJsQuerySelector>
-        <fragmentXpath>//table[contains(@class, "template-products")]</fragmentXpath>
-        <collectionXpath>*//td[contains(@class, "compact")]</collectionXpath>
-        <item>
-            <detailXpath detailName="id" prefix="VNB_">*//input[contains(@name, 'product_id')]/@value</detailXpath>
+            <detailXpath detailName="id" prefix="VNB_" isRequired="true">*//input[contains(@name, 'product_id')]/@value</detailXpath>
             <detailXpath detailName="title">*//a[contains(@class, "product-title")]/text()</detailXpath>
             <detailXpath detailName="link">*//a[contains(@class, "product-title")]/@href</detailXpath>
             <detailXpath detailName="image">*//a[contains(@class, "image-border")]//img/@data-src</detailXpath>
@@ -51,17 +35,18 @@
 
     <rule>
         <siteName>Pibook</siteName>
-        <name>Kho Sách Giảm Giá</name>
-        <url>https://pibook.vn/sach-pibook-khuyen-doc</url>
         <basedUrl>https://pibook.vn/</basedUrl>
-        <incrementParam>?page={i}</incrementParam>
-        <incrementFrom>5</incrementFrom>
-        <incrementTo>100</incrementTo>
-        <fragmentJsQuerySelector>div.dmslider</fragmentJsQuerySelector>
-        <fragmentXpath>//div[contains(@class, "dmslider")]</fragmentXpath>
+        <topics>
+            <topic>
+                <topicName>Sách Khuyên đọc</topicName>
+                <topicCode>recommend</topicCode>
+                <url incrementParam="?page={i}" to="0">https://pibook.vn/sach-pibook-khuyen-doc</url>
+                <fragmentXpath>//div[contains(@class, "dmslider")]</fragmentXpath>
+            </topic>
+        </topics>
         <collectionXpath>*//li</collectionXpath>
         <item>
-            <detailXpath detailName="id" prefix="PI_">substring-before(substring-after(p[@align='center']/a/@onclick, 'UpdateProduct('), ',')</detailXpath>
+            <detailXpath detailName="id" prefix="PI_" isRequired="true">substring-before(substring-after(p[@align='center']/a/@onclick, 'UpdateProduct('), ',')</detailXpath>
             <detailXpath detailName="title">div[contains(@class, "list1a1")]/a/text()</detailXpath>
             <detailXpath detailName="link" prefix="https://pibook.vn/">div[contains(@class, "list1a1")]/a/@href</detailXpath>
             <detailXpath detailName="image" prefix="https://pibook.vn/">div[contains(@class, "list1img")]//img/@data-original</detailXpath>
@@ -70,6 +55,56 @@
             <detailXpath detailName="price">div[contains(@class, "price1")]/text()</detailXpath>
             <detailXpath detailName="discountRate">div[contains(@style, "absolute")]/text()</detailXpath>
             <detailXpath detailName="status">boolean(p[@align='center']/a)</detailXpath>
+        </item>
+    </rule>
+
+    <rule>
+        <siteName>Bookbuy</siteName>
+        <basedUrl>https://bookbuy.vn</basedUrl>
+        <topics>
+            <topic>
+                <topicName>Sách bán chạy</topicName>
+                <topicCode>bestSeller</topicCode>
+                <url incrementParam="p{i}?ismost=true" to="0">https://bookbuy.vn/sach-ban-chay/</url>
+                <fragmentXpath>body/div[2]/div/div/div[2]/div[3]</fragmentXpath>
+            </topic>
+        </topics>
+        <collectionXpath>div[contains(@class, 'product-item')]</collectionXpath>
+        <item>
+            <detailXpath detailName="id" prefix="BBUY_" isRequired="true">div[@productid]/@productid</detailXpath>
+            <detailXpath detailName="title">div[contains(@class, "t-view")]/a/text()</detailXpath>
+            <detailXpath detailName="link" prefix="https://bookbuy.vn">div[contains(@class, "t-view")]/a/@href</detailXpath>
+            <detailXpath detailName="image" prefix="https://bookbuy.vn">div[contains(@class, "img-view")]//img/@src</detailXpath>
+            <detailXpath detailName="authors">div[contains(@class, "au-view")]/a/text()</detailXpath>
+            <detailXpath detailName="oldPrice">div[contains(@class, "p-view")]/span[@class = "price"]/text()</detailXpath>
+            <detailXpath detailName="price">div[contains(@class, "p-view")]/span[contains(@class, "real-price")]/text()</detailXpath>
+            <detailXpath detailName="discountRate">div[contains(@class, "p-view")]/span[contains(@class, "sale-off")]/text()</detailXpath>
+            <detailXpath detailName="status">boolean(div[@isout="false"])</detailXpath>
+        </item>
+    </rule>
+
+    <rule>
+        <siteName>Nhà sách Việt</siteName>
+        <basedUrl>http://nhasachviet.vn</basedUrl>
+        <topics>
+            <topic>
+                <topicName>Sách bán chạy</topicName>
+                <topicCode>bestSeller</topicCode>
+                <url incrementParam="{i}" from="0" to="168" step="24">http://nhasachviet.vn/danh-muc-sach/sach-ban-chay/</url>
+                <fragmentXpath>//div[@class="box_categories"]</fragmentXpath>
+            </topic>
+        </topics>
+        <collectionXpath>div[@class="box_book"]</collectionXpath>
+        <item>
+            <detailXpath detailName="id" prefix="NSV_" isRequired="true">substring-after(substring-before(a[@class="buy"]/@onclick, ","), "(")</detailXpath>
+            <detailXpath detailName="title">h4/a/text()</detailXpath>
+            <detailXpath detailName="link">h4/a/@href</detailXpath>
+            <detailXpath detailName="image">.//img/@src</detailXpath>
+            <detailXpath detailName="authors">p[@class="author"]/text()</detailXpath>
+            <detailXpath detailName="oldPrice">.//span[@class="price_vir"]/text()</detailXpath>
+            <detailXpath detailName="price" isRequired="true">.//span[@class="price_buy"]/text()</detailXpath>
+            <detailXpath detailName="discountRate">div[contains(@class, "starPromotion")]/span/text()</detailXpath>
+            <detailXpath detailName="status">boolean("true")</detailXpath>
         </item>
     </rule>
 </rules>

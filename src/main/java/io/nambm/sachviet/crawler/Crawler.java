@@ -1,12 +1,6 @@
 package io.nambm.sachviet.crawler;
 
-import io.nambm.sachviet.crawler.rule.Item;
-import io.nambm.sachviet.crawler.rule.ItemDetail;
-import io.nambm.sachviet.crawler.rule.Rule;
-import io.nambm.sachviet.crawler.rule.Rules;
-import io.nambm.sachviet.model.RawBook;
-import io.nambm.sachviet.repository.generic.impl.GenericRepositoryImpl;
-import io.nambm.sachviet.repository.impl.RawBookRepositoryImpl;
+import io.nambm.sachviet.crawler.rule.*;
 import io.nambm.sachviet.utils.DomUtils;
 import io.nambm.sachviet.utils.FileUtils;
 import io.nambm.sachviet.utils.JAXBUtils;
@@ -22,26 +16,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Crawler {
+public class Crawler<T extends CrawlerResultProcessor> {
     //crawlRules
     //-----
     //List<RawBook>
 
     private Rules rules;
-
     private List<Map<String, String>> results;
-
-    private RawBookRepositoryImpl repository;
+    private T resultProcessor;
 
     public Crawler(String crawlRulePath) {
         //get crawling rules
         rules = JAXBUtils.unmarshalling(crawlRulePath, null, Rules.class);
-        repository = new RawBookRepositoryImpl(GenericRepositoryImpl.getFactory());
     }
 
-    public Crawler(Rules rules) {
+    public void setRules(Rules rules) {
         this.rules = rules;
-        repository = new RawBookRepositoryImpl(GenericRepositoryImpl.getFactory());
+    }
+
+    public void setResultProcessor(T resultProcessor) {
+        this.resultProcessor = resultProcessor;
     }
 
     public List<Map<String, String>> getResults() {
@@ -51,8 +45,12 @@ public class Crawler {
         return results;
     }
 
-    public RawBookRepositoryImpl getRepository() {
-        return repository;
+    public Rules getRules() {
+        return rules;
+    }
+
+    public T getResultProcessor() {
+        return resultProcessor;
     }
 
     public void crawl() {
@@ -63,74 +61,114 @@ public class Crawler {
             return;
         }
 
-        //ITERATE ALL URLs
-        for (int i = 0; i < rules.getRule().size(); i++) {
-            Rule rule = rules.getRule().get(i);
+        System.out.println("===== Start crawling... =====");
 
+        //ITERATE ALL RULES
+        for (Rule rule : rules.getRule()) {
+
+            String baseUrl = rule.getBasedUrl();
+            String siteName = rule.getSiteName();
+            String collectionXPath = rule.getCollectionXpath();
             Item itemRule = rule.getItem();
 
-            //ITERATE ALL PAGES IN ONE URL
-            for (int pageNo = Integer.parseInt(rule.getIncrementFrom()); pageNo <= Integer.parseInt(rule.getIncrementTo()); pageNo++) {
+            System.out.println(siteName);
+            System.out.println(baseUrl);
 
-                //FETCHING HTML
-                String textContent = "";
-                try {
-                    String incrementParam = rule.getIncrementParam().replaceAll("\\{i}", "" + pageNo);
+            //ITERATE ALL URLs (Topics)
+            for (TopicType topic : rule.getTopics().getTopic()) {
 
-                    URL url = new URL(rule.getUrl() + incrementParam);
-                    URLConnection connection = url.openConnection();
+                String topicName = topic.getTopicName();
+                String topicCode = topic.getTopicCode();
 
-                    textContent = FileUtils.getString(connection.getInputStream());
+                UrlType topicURL = topic.getUrl();
 
-                    textContent = TextUtils.refineHtml(textContent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("IO Error: " + e);
-                    continue;
-                }
+                //The XPath to locate the position of main content
+                String fragmentXPath = topic.getFragmentXpath();
 
-                //PARSE text into DOM
-                Document document = DomUtils.parseStringIntoDOM(textContent);
+                System.out.println();
+                System.out.println(topicName);
 
-                Node fragment = DomUtils.evaluateNode(document, rule.getFragmentXpath(), Node.class);
+                int from = Integer.parseInt(topicURL.getFrom());
+                int to = Integer.parseInt(topicURL.getTo());
+                int step = Integer.parseInt(topicURL.getStep());
 
-                NodeList collection = DomUtils.evaluateNode(fragment, rule.getCollectionXpath(), NodeList.class);
+                //ITERATE ALL PAGES IN ONE URL
+                for (int pageNo = from; pageNo <= to; pageNo += step) {
 
-                if (collection == null || collection.getLength() == 0) {
-                    break;
-                }
-
-                List<Map<String, String>> batch = new LinkedList<>();
-                collectionLoop:
-                for (int j = 0; j < collection.getLength(); j++) {
-                    Node item = collection.item(j);
-
-                    Map<String, String> obj = new HashMap<>();
-
-                    obj.put("siteName", rule.getSiteName());
-
-                    for (ItemDetail detailRule : itemRule.getDetailXpath()) {
-                        String name = detailRule.getDetailName();
-                        String value = DomUtils.evaluateNode(item, detailRule.getValue(), String.class);
-
-                        if ("id".equals(name) && (value != null && value.trim().equals(""))) {
-                            continue collectionLoop;
+                    //FETCHING HTML
+                    String textContent;
+                    try {
+                        String incrementParam = "";
+                        if (!topicURL.getIncrementParam().trim().equals("")) {
+                            incrementParam = topicURL.getIncrementParam().replaceAll("\\{i}", String.valueOf(pageNo));
                         }
 
-                        value = detailRule.getPrefix() + value + detailRule.getPostfix();
+                        URL url = new URL(topicURL.getValue() + incrementParam);
+                        URLConnection connection = url.openConnection();
 
-                        obj.put(name, value);
+                        textContent = FileUtils.getString(connection.getInputStream());
+
+                        textContent = TextUtils.refineHtml(textContent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("IO Error: " + e);
+                        break;//exit pages loop - go to next Topic
                     }
 
-                    results.add(obj);
-//                    System.out.println(obj);
-                    repository.insert(RawBook.convert(obj));
-                }
+                    //PARSE text into DOM
+                    Document document = DomUtils.parseStringIntoDOM(textContent);
 
-                //End of some code for iterate pages
-            }
+                    //Get target fragment (to eliminate missed evaluations)
+                    Node fragment = DomUtils.evaluateNode(document, fragmentXPath, Node.class);
+
+                    NodeList collection = DomUtils.evaluateNode(fragment, collectionXPath, NodeList.class);
+
+                    if (collection == null || collection.getLength() == 0) {
+                        System.out.println("empty collection");
+                        break;//exit pages loop - go to next Topic
+                    }
+
+                    collectionLoop:
+                    for (int j = 0; j < collection.getLength(); j++) {
+                        Map<String, String> obj = new HashMap<>();
+                        Node item = collection.item(j);
+
+                        obj.put("siteName", siteName);
+                        obj.put("topicCode", topicCode);
+
+                        for (ItemDetail detailXPath : itemRule.getDetailXpath()) {
+                            String name = detailXPath.getDetailName();
+                            String value = DomUtils.evaluateNode(item, detailXPath.getValue(), String.class);
+
+                            if (detailXPath.isIsRequired()) {
+                                if (value != null && value.trim().equals("")) {
+                                    continue collectionLoop;//ignore any item (obj) in the collection that contains empty attribute(s)
+                                }
+                            }
+
+                            value = detailXPath.getPrefix() + value + detailXPath.getPostfix();
+
+                            obj.put(name, value);
+                        }//End one item
+
+                        results.add(obj);
+
+                        //System.out.println(obj);
+                        if (resultProcessor != null && resultProcessor.isNeededToProcessObject()) {
+                            resultProcessor.processResultObject(obj);
+                        }
+
+                    }//End items in one topic
+
+                }//End topic
+
+            }//End all topics for one rule
+
+        }//End all rules
+
+        //System.out.println(results.size());
+        if (resultProcessor != null && resultProcessor.isNeededToProcessList()) {
+            resultProcessor.processResultList(results);
         }
-
-//        System.out.println(results.size());
     }
 }
