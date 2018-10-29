@@ -97,7 +97,7 @@
         <collectionXpath>div[@class="box_book"]</collectionXpath>
         <item>
             <detailXpath detailName="id" prefix="NSV_" isRequired="true">substring-after(substring-before(a[@class="buy"]/@onclick, ","), "(")</detailXpath>
-            <detailXpath detailName="title">h4/a/text()</detailXpath>
+            <detailXpath detailName="title">h4/a/@title</detailXpath>
             <detailXpath detailName="link">h4/a/@href</detailXpath>
             <detailXpath detailName="image">.//img/@src</detailXpath>
             <detailXpath detailName="authors">p[@class="author"]/text()</detailXpath>
