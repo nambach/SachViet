@@ -1,6 +1,6 @@
-package utils;
+package io.nambm.sachviet.utils;
 
-import model.LCSResult;
+import io.nambm.sachviet.model.LCSResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;

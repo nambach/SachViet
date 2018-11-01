@@ -1,4 +1,4 @@
-package model;
+package io.nambm.sachviet.model;
 
 public class LCSResult {
 

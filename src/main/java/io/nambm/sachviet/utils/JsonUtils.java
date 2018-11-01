@@ -1,4 +1,4 @@
-package utils;
+package io.nambm.sachviet.utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,14 +32,5 @@ public class JsonUtils {
 
     private static String toArrayJson(List<String> list) {
         return list.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(",", "[", "]"));
-    }
-
-    public static void main(String[] args) {
-        String s = "[\"12345\"]";
-        s = addValueToArray(s, "12345");
-        s = addValueToArray(s, "zsa s");
-        s = deleteValueFromArray(s, "12345");
-        s = deleteValueFromArray(s, "zsa s");
-        System.out.println(getStringArray(s).size());
     }
 }
