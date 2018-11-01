@@ -16,7 +16,7 @@
 
         <property name="show_sql">true</property>
 
-        <mapping class="io.nambm.sachviet.model.RawBook"/>
+        <mapping class="io.nambm.sachviet.entity.RawBook"/>
 
     </session-factory>
 </hibernate-configuration>

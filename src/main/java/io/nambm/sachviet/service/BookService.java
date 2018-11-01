@@ -1,6 +1,6 @@
 package io.nambm.sachviet.service;
 
-import io.nambm.sachviet.model.RawBook;
+import io.nambm.sachviet.entity.RawBook;
 
 import java.util.List;
 

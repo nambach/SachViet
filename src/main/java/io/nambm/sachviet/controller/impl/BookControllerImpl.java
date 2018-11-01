@@ -1,7 +1,7 @@
 package io.nambm.sachviet.controller.impl;
 
 import io.nambm.sachviet.controller.BookController;
-import io.nambm.sachviet.model.RawBook;
+import io.nambm.sachviet.entity.RawBook;
 import io.nambm.sachviet.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

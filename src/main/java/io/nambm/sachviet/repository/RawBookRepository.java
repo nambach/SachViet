@@ -1,6 +1,6 @@
 package io.nambm.sachviet.repository;
 
-import io.nambm.sachviet.model.RawBook;
+import io.nambm.sachviet.entity.RawBook;
 import io.nambm.sachviet.repository.generic.GenericRepository;
 
 import java.util.List;

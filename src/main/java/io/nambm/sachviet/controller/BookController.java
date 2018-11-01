@@ -1,6 +1,6 @@
 package io.nambm.sachviet.controller;
 
-import io.nambm.sachviet.model.RawBook;
+import io.nambm.sachviet.entity.RawBook;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

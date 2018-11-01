@@ -1,6 +1,6 @@
 package io.nambm.sachviet.service.impl;
 
-import io.nambm.sachviet.model.RawBook;
+import io.nambm.sachviet.entity.RawBook;
 import io.nambm.sachviet.repository.RawBookRepository;
 import io.nambm.sachviet.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;

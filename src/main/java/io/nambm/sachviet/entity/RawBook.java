@@ -1,5 +1,6 @@
-package io.nambm.sachviet.model;
+package io.nambm.sachviet.entity;
 
+import io.nambm.sachviet.model.book.Book;
 import io.nambm.sachviet.repository.generic.GenericEntity;
 
 import javax.persistence.Column;
@@ -45,6 +46,11 @@ public class RawBook implements GenericEntity {
     //Status
     @Column(name = "`status`")
     private String status;
+
+    @Column(name = "`compareGroupId`")
+    private String compareGroupId;
+    @Column(name = "`suggestGroupId`")
+    private String suggestGroupId;
 
     public RawBook() {
     }
@@ -142,6 +148,22 @@ public class RawBook implements GenericEntity {
         this.siteName = siteName;
     }
 
+    public String getCompareGroupId() {
+        return compareGroupId;
+    }
+
+    public void setCompareGroupId(String compareGroupId) {
+        this.compareGroupId = compareGroupId;
+    }
+
+    public String getSuggestGroupId() {
+        return suggestGroupId;
+    }
+
+    public void setSuggestGroupId(String suggestGroupId) {
+        this.suggestGroupId = suggestGroupId;
+    }
+
     @Override
     public String toString() {
         return "RawBook{" +
@@ -183,5 +205,9 @@ public class RawBook implements GenericEntity {
             rawBooks.add(convert(item));
         }
         return rawBooks;
+    }
+
+    public Book toBook() {
+        return new Book(id, siteName, title, authors, image, link, price, oldPrice, status);
     }
 }
