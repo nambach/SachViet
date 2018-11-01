@@ -105,12 +105,14 @@ public class Crawler<T extends CrawlerResultProcessor> {
 
                         URL url = new URL(topicURL.getValue() + incrementParam);
                         URLConnection connection = url.openConnection();
+                        connection.setReadTimeout(8 * 1000);
+                        connection.setConnectTimeout(8 * 1000);
 
                         textContent = FileUtils.getString(connection.getInputStream());
 
                         textContent = TextUtils.refineHtml(textContent);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         System.out.println("IO Error: " + e);
                         break;//exit pages loop - go to next Topic
                     }
