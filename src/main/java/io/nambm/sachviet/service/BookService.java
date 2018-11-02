@@ -9,5 +9,9 @@ public interface BookService {
 
     List<RawBook> searchBook(String searchValue);
 
+    List<RawBook> searchBookByIds(List<String> ids);
+
     List<CompareGroup> searchBookCompare(String searchValue);
+
+    List<CompareGroup> searchBookCompareByIds(List<String> ids);
 }

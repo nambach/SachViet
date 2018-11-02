@@ -35,10 +35,28 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<RawBook> searchBookByIds(List<String> ids) {
+        List<RawBook> books;
+
+        books = bookRepository.searchByIds(ids);
+
+        return books;
+    }
+
+    @Override
     public List<CompareGroup> searchBookCompare(String searchValue) {
         List<CompareGroup> groups;
 
         groups = compareGroupRepository.searchByNameOrAuthor(searchValue);
+
+        return groups;
+    }
+
+    @Override
+    public List<CompareGroup> searchBookCompareByIds(List<String> ids) {
+        List<CompareGroup> groups;
+
+        groups = compareGroupRepository.searchByIds(ids);
 
         return groups;
     }

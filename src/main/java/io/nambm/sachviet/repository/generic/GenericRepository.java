@@ -16,6 +16,10 @@ public interface GenericRepository<T> {
 
     List<T> searchAll();
 
+    //todo: search by value with column names
+
+    List<T> searchByIds(List<String> ids);
+
     T findById(T entity);
 
     T delete(T entity);

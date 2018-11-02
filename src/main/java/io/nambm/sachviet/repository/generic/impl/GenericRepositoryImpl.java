@@ -147,6 +147,20 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
         }
     }
 
+    @Override
+    public List<T> searchByIds(List<String> ids) {
+        List<T> list = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            list = session.createQuery("from " + tableName + " where ", clazz).list(); //todo: set list of id
+
+            session.close();
+            return list;
+        } catch (Exception ignored) {
+            return list;
+        }
+    }
+
     public T findById(T entity) {
         Session session = null;
         try {
