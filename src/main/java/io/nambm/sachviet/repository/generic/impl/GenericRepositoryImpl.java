@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class GenericRepositoryImpl<T extends GenericEntity> implements GenericRepository<T> {
 
@@ -50,7 +51,6 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
         }
     }
 
-    @Override
     public void insertBatch(List<T> entities) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -70,7 +70,6 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
         }
     }
 
-    @Override
     public void updateBatch(List<T> entities) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -147,12 +146,14 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
         }
     }
 
-    @Override
-    public List<T> searchByIds(List<String> ids) {
+    public List<T> searchExactColumn(List<String> values, String columnName) {
         List<T> list = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            list = session.createQuery("from " + tableName + " where ", clazz).list(); //todo: set list of id
+
+            String queryParams = columnName + " in " + values.stream().map(s -> "'" + s + "'").collect(Collectors.joining(",", "(", ")"));
+
+            list = session.createQuery("from " + tableName + " where " + queryParams, clazz).list();
 
             session.close();
             return list;

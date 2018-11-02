@@ -44,4 +44,8 @@ public class CompareGroupRepositoryImpl extends GenericRepositoryImpl<CompareGro
         }
         return list;
     }
+
+    public List<CompareGroup> searchByIds(List<String> idList) {
+        return searchExactColumn(idList, "groupId");
+    }
 }

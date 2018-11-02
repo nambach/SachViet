@@ -18,7 +18,7 @@ public interface GenericRepository<T> {
 
     //todo: search by value with column names
 
-    List<T> searchByIds(List<String> ids);
+    List<T> searchExactColumn(List<String> values, String columnName);
 
     T findById(T entity);
 

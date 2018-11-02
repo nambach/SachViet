@@ -8,4 +8,6 @@ import java.util.List;
 public interface RawBookRepository extends GenericRepository<RawBook> {
 
     List<RawBook> searchByNameOrAuthor(String name);
+
+    List<RawBook> searchByIds(List<String> idList);
 }

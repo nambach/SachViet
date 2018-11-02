@@ -41,4 +41,8 @@ public class RawBookRepositoryImpl extends GenericRepositoryImpl<RawBook> implem
         }
         return list;
     }
+
+    public List<RawBook> searchByIds(List<String> idList) {
+        return searchExactColumn(idList, "id");
+    }
 }
