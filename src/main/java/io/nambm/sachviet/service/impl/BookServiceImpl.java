@@ -1,6 +1,8 @@
 package io.nambm.sachviet.service.impl;
 
+import io.nambm.sachviet.entity.CompareGroup;
 import io.nambm.sachviet.entity.RawBook;
+import io.nambm.sachviet.repository.CompareGroupRepository;
 import io.nambm.sachviet.repository.RawBookRepository;
 import io.nambm.sachviet.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,12 @@ public class BookServiceImpl implements BookService {
 
     private final RawBookRepository bookRepository;
 
+    private final CompareGroupRepository compareGroupRepository;
+
     @Autowired
-    public BookServiceImpl(RawBookRepository bookRepository) {
+    public BookServiceImpl(RawBookRepository bookRepository, CompareGroupRepository compareGroupRepository) {
         this.bookRepository = bookRepository;
+        this.compareGroupRepository = compareGroupRepository;
     }
 
     @Override
@@ -29,4 +34,12 @@ public class BookServiceImpl implements BookService {
         return books;
     }
 
+    @Override
+    public List<CompareGroup> searchBookCompare(String searchValue) {
+        List<CompareGroup> groups;
+
+        groups = compareGroupRepository.searchByNameOrAuthor(searchValue);
+
+        return groups;
+    }
 }

@@ -57,7 +57,27 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
 
             for (int i = 0; i < entities.size(); i++) {
                 session.save(entities.get(i));
-                if (i % 10 == 0) { // Same as the JDBC batch size
+                if (i % 50 == 0) { // Same as the JDBC batch size
+                    //flush a batch of inserts and release memory:
+                    session.flush();
+                    session.clear();
+                }
+            }
+
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void updateBatch(List<T> entities) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            for (int i = 0; i < entities.size(); i++) {
+                session.saveOrUpdate(entities.get(i));
+                if (i % 50 == 0) { // Same as the JDBC batch size
                     //flush a batch of inserts and release memory:
                     session.flush();
                     session.clear();

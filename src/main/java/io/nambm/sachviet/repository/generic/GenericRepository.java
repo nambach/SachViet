@@ -8,6 +8,8 @@ public interface GenericRepository<T> {
 
     void insertBatch(List<T> entities);
 
+    void updateBatch(List<T> entities);
+
     void insertOrReplace(T entity);
 
     void update(T entity, String... properties);

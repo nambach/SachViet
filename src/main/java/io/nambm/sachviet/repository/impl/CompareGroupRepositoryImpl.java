@@ -6,10 +6,14 @@ import io.nambm.sachviet.repository.generic.impl.GenericRepositoryImpl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@SessionScope
 public class CompareGroupRepositoryImpl extends GenericRepositoryImpl<CompareGroup> implements CompareGroupRepository {
 
     public CompareGroupRepositoryImpl(SessionFactory sessionFactory) {
