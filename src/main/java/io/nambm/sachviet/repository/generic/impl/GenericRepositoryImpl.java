@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class GenericRepositoryImpl<T extends GenericEntity> implements GenericRepository<T> {
@@ -146,11 +147,32 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
         }
     }
 
+    public List<T> searchAlikeColumn(Map<String, String> keyValues) {
+        List<T> list = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            //e.g: key1 LIKE '%value1%' OR key2 LIKE '%value2%'
+            String queryParams = keyValues.entrySet()
+                    .stream()
+                    .map(entry -> entry.getKey() + " LIKE '%" + entry.getValue() + "%'")
+                    .collect(Collectors.joining(" OR "));
+
+            list = session.createQuery("from " + tableName + " where " + queryParams, clazz).list();
+
+            session.close();
+            return list;
+        } catch (Exception ignored) {
+            return list;
+        }
+    }
+
     public List<T> searchExactColumn(List<String> values, String columnName) {
         List<T> list = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
+            //e.g: id IN ('id001','id002')
             String queryParams = columnName + " in " + values.stream().map(s -> "'" + s + "'").collect(Collectors.joining(",", "(", ")"));
 
             list = session.createQuery("from " + tableName + " where " + queryParams, clazz).list();

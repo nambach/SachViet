@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @SessionScope
@@ -25,24 +27,11 @@ public class CompareGroupRepositoryImpl extends GenericRepositoryImpl<CompareGro
     }
 
     public List<CompareGroup> searchByNameOrAuthor(String name) {
-        List<CompareGroup> list = new ArrayList<>();
+        Map<String, String> keyValues = new HashMap<>();
+        keyValues.put("title", name);
+        keyValues.put("authors", name);
 
-        if (name == null || name.trim().equals("")) {
-            return list;
-        }
-
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            Query<CompareGroup> query = session.createQuery("FROM " + tableName + " b WHERE b.title LIKE :search_value OR b.authors LIKE :search_value", CompareGroup.class);
-
-            query.setParameter("search_value", "%" + name + "%");
-
-            list = query.list();
-
-            session.close();
-        } catch (Exception ignored) {
-        }
-        return list;
+        return searchAlikeColumn(keyValues);
     }
 
     public List<CompareGroup> searchByIds(List<String> idList) {

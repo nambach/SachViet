@@ -1,6 +1,7 @@
 package io.nambm.sachviet.repository.generic;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GenericRepository<T> {
 
@@ -16,7 +17,7 @@ public interface GenericRepository<T> {
 
     List<T> searchAll();
 
-    //todo: search by value with column names
+    List<T> searchAlikeColumn(Map<String, String> keyValues);
 
     List<T> searchExactColumn(List<String> values, String columnName);
 
