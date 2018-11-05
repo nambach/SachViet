@@ -69,10 +69,12 @@
             <div class="separator"></div>
 
             <div class="filter-group">
-                <div class="filter-name">Nhà xuất bản</div>
-                <div class="scroll-list">
-                    <div><input type="checkbox"/> Fujiko F. Fujio</div>
-                    <div><input type="checkbox"/> Gosho Ayaoma</div>
+                <div class="filter-name">Nơi bán</div>
+                <div class="scroll-list vertical-center-children">
+                    <div data-name="vnb"><input type="checkbox" name="chkShop" value="vnb" checked/><img src="${pageContext.request.contextPath}/resources/img/vnb-logo.png"></div>
+                    <div data-name="pi"><input type="checkbox" name="chkShop" value="pi" checked/><img src="${pageContext.request.contextPath}/resources/img/pi-logo.png"></div>
+                    <div data-name="nsv"><input type="checkbox" name="chkShop" value="nsv" checked/><img src="${pageContext.request.contextPath}/resources/img/nsv-logo.png"></div>
+                    <div data-name="bbuy"><input type="checkbox" name="chkShop" value="bbuy" checked/><img src="${pageContext.request.contextPath}/resources/img/bbuy-logo.png"></div>
                 </div>
             </div>
 
@@ -83,7 +85,7 @@
         <div class="vertical-center" style="height: 50px; padding-left: 25px">
             <p>
                 <span style="font-weight: bold">Kết quả tìm kiếm:</span>
-                &nbsp; Có 100,000 kết quả cho sản phẩm này
+                &nbsp;<span id="resultMessage"> Có <span id="numberOfResults">0</span> kết quả cho sản phẩm này</span>
                 <span class="pagination noselect-all">
                     <a data-type="btnFirst">&#171;</a>
                     <a data-type="btnFirstStub" class="hidden">&#171;</a>
@@ -113,8 +115,8 @@
                 <div class="book-author">
                     <small></small>
                 </div>
-                <div class="book-old-price"></div>
                 <div class="book-price"></div>
+                <div class="book-shops"></div>
             </div>
         </div>
     </div>

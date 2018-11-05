@@ -116,15 +116,22 @@
     font-size: 17px;
     font-weight: bold;
 }
-.search-filter .filter-group {
+.filter-group {
     margin-left: 5%;
     width: 90%;
 }
-.search-filter .filter-group>div {
+.filter-group>div {
     margin-bottom: 8px;
     width: 100%;
     display: inline-block;
     height: auto;
+}
+.filter-group img {
+    width: 70%;
+    margin-left: 6%;
+}
+.filter-group .scroll-list>div {
+    margin: 24px 0;
 }
 .search-filter>.separator {
     height: 20px;
@@ -175,10 +182,20 @@
 .book-title {
     font-weight: bold;
 }
-.book-price, .book-old-price  {
-    font-size: 13px;
+.book-price {
+    color: green;
+    margin-top: 8px !important;
 }
-.book-old-price {
-    text-decoration: line-through;
-    color: #d03c26
+.book-shops {
+    max-height: inherit !important;
+    margin-top: 12px !important;
+}
+.book-shops p {
+    padding: 8px 0;
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    margin-top: 0px;
+}
+.book-shops img {
+    width: 100%;
 }

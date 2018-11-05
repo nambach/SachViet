@@ -17,6 +17,8 @@
         <property name="show_sql">true</property>
 
         <mapping class="io.nambm.sachviet.entity.RawBook"/>
+        <mapping class="io.nambm.sachviet.entity.CompareGroup"/>
+        <mapping class="io.nambm.sachviet.entity.SuggestGroup"/>
 
     </session-factory>
 </hibernate-configuration>

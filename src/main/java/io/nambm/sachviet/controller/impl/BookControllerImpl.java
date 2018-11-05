@@ -40,7 +40,7 @@ public class BookControllerImpl implements BookController {
     }
 
     @GetMapping("/books/search")
-    public ResponseEntity<List<CompareGroup>> searchBooksForCompare(String searchValue) {
+    public ResponseEntity<List<CompareGroup>> searchBooksForCompare(@RequestParam String searchValue) {
         List<CompareGroup> books = new LinkedList<>();
 
         searchValue = searchValue.trim();

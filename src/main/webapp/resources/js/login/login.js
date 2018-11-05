@@ -10,6 +10,8 @@ let loginView = {
         this.txtUsername = document.querySelector("input[name='username']");
         this.txtPassword = document.querySelector("input[name='password']");
         this.txtMessage = document.querySelector("div.loginMessage");
+
+        this.txtUsername.focus();
     },
 
     bindElements() {
