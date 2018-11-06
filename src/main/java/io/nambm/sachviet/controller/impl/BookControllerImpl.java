@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -52,6 +54,19 @@ public class BookControllerImpl implements BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
+    @GetMapping("/books/suggest")
+    public ResponseEntity<List<CompareGroup>> getSuggestedBooks(@RequestParam String suggestId) {
+        List<CompareGroup> books = new LinkedList<>();
+
+        suggestId = suggestId.trim();
+
+        if (!suggestId.equals("")) {
+            books = bookService.getSuggestedBooks(suggestId);
+        }
+
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
     @GetMapping("/books/compare")
     public ResponseEntity<CompareModel> getCompareDetail(@RequestParam String compareGroupId) {
         CompareModel model = null;
@@ -73,5 +88,22 @@ public class BookControllerImpl implements BookController {
         }
 
         return new ResponseEntity<>(model, status);
+    }
+
+    @GetMapping("/compare/{id}")
+    public ModelAndView viewDetail(@PathVariable("id") String compareId) {
+        ModelAndView modelAndView = new ModelAndView("error/404");
+
+        if (compareId != null && !compareId.trim().equals("")) {
+            ResponseEntity<CompareModel> compareModelResponse = getCompareDetail(compareId);
+            if (compareModelResponse.getStatusCode().is2xxSuccessful()) {
+                modelAndView.setViewName("home/detail");
+                modelAndView.addObject("compareId", compareId);
+                modelAndView.addObject("compareGroup", compareModelResponse.getBody());
+                modelAndView.addObject("suggestId", compareModelResponse.getBody().getSuggestGroupId());
+            }
+        }
+
+        return modelAndView;
     }
 }

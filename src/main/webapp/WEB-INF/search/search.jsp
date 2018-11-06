@@ -15,7 +15,9 @@
 <body class="body">
 <div class="header">
     <div class="header-logo">
-        <img src="${pageContext.request.contextPath}/resources/img/sachviet.png" style="height: 80px"/>
+        <a href="${pageContext.request.contextPath}/">
+            <img src="${pageContext.request.contextPath}/resources/img/sachviet.png" style="height: 80px"/>
+        </a>
     </div>
     <div class="header-content">
         <p style="color: white; flex: auto; font-size: 20px; width: 90%;">
@@ -30,7 +32,13 @@
 </div>
 
 <div class="breadcrumb vertical-center">
-    <p><a>Sách Văn học</a> > <a>Tiểu thuyết</a> > <a>Trinh thám</a></p>
+    <p>
+        <a></a>
+        >
+        <a></a>
+        >
+        <a></a>
+    </p>
 </div>
 
 <div class="content">
@@ -126,6 +134,7 @@
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/constant.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/common.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/pagination.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/search/searchModel.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/search/searchView.js"></script>

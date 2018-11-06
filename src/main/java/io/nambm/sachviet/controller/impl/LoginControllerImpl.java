@@ -18,12 +18,12 @@ public class LoginControllerImpl implements LoginController {
 
     private int a = 0;
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     public ModelAndView defaultPage() {
         return new ModelAndView("login/login");
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public ModelAndView home() {
         return new ModelAndView("search/search");
     }
@@ -42,5 +42,10 @@ public class LoginControllerImpl implements LoginController {
         } catch (Exception e) {
             return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/404")
+    public ModelAndView notFound() {
+        return new ModelAndView("error/404");
     }
 }

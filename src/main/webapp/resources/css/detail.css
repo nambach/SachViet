@@ -1,0 +1,143 @@
+.compare-page {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: flex-start
+}
+.compare-container {
+    width: 65%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+.right-container {
+    width: 25%;
+    padding: 0 25px;
+    border: 1px #444 solid;
+}
+.bottom-container {
+    margin: 20px 0;
+    width: 95%;
+    border: 1px #444 solid;
+}
+
+
+.common-info {
+    padding: 50px 0 15px 0;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+.common-img {
+    width: 25%;
+}
+.common-img img {
+    width: 100%;
+}
+.common-title {
+    width: 45%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+}
+.common-title .title {
+    font-weight: bold;
+    font-size: 28px;
+    margin: 20px 0;
+}
+.common-title .authors {
+    line-height: 30px;
+}
+.common-title .price {
+    font-size: 24px;
+    margin-bottom: 0;
+    color: green;
+}
+
+.group-info {
+    width: 90%;
+    padding: 20px 0;
+}
+.group-info .item {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    border: 1px solid #eee;
+
+    margin-bottom: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.group-info .item-internal-info {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    width: 60%;
+}
+.group-info .item-img, .group-info .item-img img {
+    width: 100px;
+}
+.group-info .item-title {
+    margin-left: 50px;
+    width: 60%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between
+}
+.group-info .item-title .title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 15px
+}
+.group-info .item-title .price {
+    font-size: 20px;
+    line-height: 50px;
+    color: #de1f1f;
+}
+
+.group-info .item-external-link {
+    width: 25%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+.group-info .item-external-link img {
+    width: 100%;
+}
+
+
+.right-container>.title {
+    padding: 15px 0;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px dashed black;
+}
+.right-container .item {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.right-container .img {
+    width: 25%;
+}
+.right-container .img img {
+    width: 100%;
+}
+.right-container .info {
+    width: 65%;
+}
+.right-container .info .authors {
+    color: #747474;
+    margin: 5px 0;
+    font-weight: 500;
+    font-size: 13px;
+}
+.right-container .info .price {
+    font-size: 18px;
+    color: #de1f1f;
+}

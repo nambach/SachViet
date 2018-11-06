@@ -14,4 +14,6 @@ public interface BookService {
     List<CompareGroup> searchBookCompare(String searchValue);
 
     List<CompareGroup> searchBookCompareByIds(List<String> ids);
+
+    List<CompareGroup> getSuggestedBooks(String suggestId);
 }
