@@ -30,6 +30,7 @@ public class CompareGroupRepositoryImpl extends GenericRepositoryImpl<CompareGro
         Map<String, String> keyValues = new HashMap<>();
         keyValues.put("title", name);
         keyValues.put("authors", name);
+        keyValues.put("keyword", name);
 
         return searchAlikeColumn(keyValues);
     }

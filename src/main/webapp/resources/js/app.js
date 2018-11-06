@@ -33,10 +33,11 @@ let appView = {
             price.textContent = "Giá từ " + price.textContent;
         }
         if (!price.textContent.includes("đ") && !price.textContent.includes("d")) price.textContent += "đ";
+        price.textContent = price.textContent.replace(".", ",");
 
         let shop = node.querySelector(".book-shops");
         if (book["memberList"].length === 1) {
-            shop.innerHTML = `<img src=${appView.getShopLogo(book["id"])} alt=${book["id"]}/>`;
+            shop.innerHTML = `<a href="${book["link"]}" title="${book["title"]}" target="_blank" rel="noopener noreferrer"><img src=${appView.getShopLogo(book["id"])} alt=${book["id"]}/></a>`;
         } else {
             shop.innerHTML = `<p>Có ${book["memberList"].length} nơi bán</p>`;
         }
