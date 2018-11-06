@@ -45,9 +45,7 @@ public class BookControllerImpl implements BookController {
     public ResponseEntity<List<CompareGroup>> searchBooksForCompare(@RequestParam String searchValue) {
         List<CompareGroup> books = new LinkedList<>();
 
-        searchValue = searchValue.trim();
-
-        if (!searchValue.equals("")) {
+        if (!searchValue.trim().equals("")) {
             books = bookService.searchBookCompare(searchValue);
         }
 

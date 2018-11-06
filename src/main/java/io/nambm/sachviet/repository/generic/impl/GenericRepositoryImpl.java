@@ -5,8 +5,9 @@ import io.nambm.sachviet.repository.generic.GenericRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+import org.hibernate.type.StringNVarcharType;
 
-import javax.persistence.Query;
 import javax.persistence.Table;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -153,13 +154,17 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            //e.g: key1 LIKE '%value1%' OR key2 LIKE '%value2%'
-            String queryParams = keyValues.entrySet()
+            //e.g: key1 LIKE :key1 OR key2 LIKE :key2
+            String queryParams = keyValues.keySet()
                     .stream()
-                    .map(entry -> entry.getKey() + " LIKE '%" + entry.getValue() + "%'")
-                    .collect(Collectors.joining(" OR "));
+                    .map(s -> s + " like :" + s)
+                    .collect(Collectors.joining(" or "));
 
-            list = session.createQuery("from " + tableName + " where " + queryParams, clazz).list();
+            Query<T> query = session.createQuery("from " + tableName + " where " + queryParams, clazz);
+
+            keyValues.forEach((key, value) -> query.setParameter(key, "%" + value + "%", StringNVarcharType.INSTANCE));
+
+            list = query.list();
 
             session.close();
             return list;
@@ -173,10 +178,16 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            //e.g: id IN ('id001','id002')
-            String queryParams = columnName + " in " + values.stream().map(s -> "'" + s + "'").collect(Collectors.joining(",", "(", ")"));
+            //e.g: id IN (:param0, :param1, :param2)
+            String queryParams = columnName + " in " + values.stream().map(s -> ":param" + values.indexOf(s)).collect(Collectors.joining(", ", "(", ")"));
 
-            list = session.createQuery("from " + tableName + " where " + queryParams, clazz).list();
+            Query<T> query = session.createQuery("from " + tableName + " where " + queryParams, clazz);
+
+            for (int i = 0; i < values.size(); i++) {
+                query.setParameter("param" + i, values.get(i), StringNVarcharType.INSTANCE);
+            }
+
+            list = query.list();
 
             session.close();
             return list;
