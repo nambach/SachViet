@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.Query;
 import javax.persistence.Table;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -213,6 +214,18 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
             return entity;
         } catch (Exception ignored) {
             return null;
+        }
+    }
+
+    public void clearData() {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            Query query = session.createQuery("delete from " + tableName);
+            query.executeUpdate();
+
+            session.close();
+        } catch (Exception ignored) {
         }
     }
 }

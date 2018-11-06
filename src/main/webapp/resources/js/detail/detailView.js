@@ -27,11 +27,18 @@ let detailView = {
         let self = detailView;
 
         detailModel.getSuggestGroup(self.suggestId, (data) => {
-            let suggestGroup = data;
-            for(let i = 0; i < suggestGroup.length; i++) {
+            data = JSON.parse(data);
+            let suggestGroup = data.filter(item => item["id"] !== self.compareId);
+
+            for (let i = 0; i < suggestGroup.length; i++) {
                 let suggestGroupItemData = suggestGroup[i];
                 let newNode = self.newSuggestItem(suggestGroupItemData);
                 self.suggestContainer.appendChild(newNode);
+            }
+            
+            if (suggestGroup.length === 0) {
+                document.querySelector(".bottom-container-title").classList.add("hidden");
+                document.querySelector(".bottom-container").classList.add("hidden");
             }
         });
     },

@@ -89,11 +89,11 @@
     </div>
 
 
-    <div style="margin-top: 50px; margin-bottom: 20px; font-size: 25px; font-weight: bold;">
+    <div class="bottom-container-title" style="margin-top: 50px; margin-bottom: 20px; font-size: 25px; font-weight: bold;">
         Có thể bạn muốn xem
     </div>
     <div class="bottom-container">
-        <div class="suggest-list">
+        <div class="suggest-list" style="display: flex; flex-flow: row wrap; padding: 20px">
             <div class="book-item hidden" data-book-template>
                 <img class="box-shadow box-shadow-hover"
                      src=""
@@ -121,7 +121,7 @@
         pageContext = "${pageContext.request.contextPath}";
         detailView.init("${compareId}", "${suggestId}");
         detailView.renderCompareGroup();
-        // detailView.renderSuggestGroup();
+        detailView.renderSuggestGroup();
     });
 </script>
 </html>

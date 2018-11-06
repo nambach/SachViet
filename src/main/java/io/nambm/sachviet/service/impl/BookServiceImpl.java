@@ -7,6 +7,7 @@ import io.nambm.sachviet.repository.CompareGroupRepository;
 import io.nambm.sachviet.repository.RawBookRepository;
 import io.nambm.sachviet.repository.SuggestGroupRepository;
 import io.nambm.sachviet.service.BookService;
+import io.nambm.sachviet.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
@@ -81,5 +82,98 @@ public class BookServiceImpl implements BookService {
         result = compareGroupRepository.searchByIds(suggestGroup.getMemberList());
 
         return result;
+    }
+
+    @Override
+    public void classifyBooks() {
+        List<RawBook> books = bookRepository.searchAll();
+
+        List<CompareGroup> compareGroups = compareGroupRepository.searchAll();
+        List<SuggestGroup> suggestGroups = suggestGroupRepository.searchAll();
+
+        long start = System.currentTimeMillis();
+
+        //Classify books for comparing
+        for (RawBook book : books) {
+            boolean pass = false;
+
+            CompareGroup candidateGroup = null;
+            double candidateSimilarRate = 0;
+
+            for (CompareGroup compareGroup : compareGroups) {
+                if (compareGroup.checkMemberSource(book.getId()))
+                    continue; // Two books with same source can not be in a same group
+
+                String groupTitle = compareGroup.getTitle();
+                String bookTitle = book.getTitle();
+
+                // Remove authors name in title (if any)
+                if (compareGroup.getAuthors() != null && !compareGroup.getAuthors().equals("")) {
+                    bookTitle = bookTitle.replace(compareGroup.getAuthors(), "");
+                }
+
+                double similarRate = StringUtils.calculateLCSubstring(bookTitle, groupTitle).calculateIdentity();
+                if (similarRate >= 0.8 && similarRate > candidateSimilarRate) {
+                    candidateGroup = compareGroup;
+                    candidateSimilarRate = similarRate;
+                    pass = true;
+                }
+            }
+
+            if (pass) {
+                candidateGroup.addMember(book.getId());
+                candidateGroup.updateBookInfo(book);
+
+                book.setCompareGroupId(candidateGroup.getId());
+            }
+
+            if (!pass) {
+                CompareGroup newGroup = new CompareGroup();
+                newGroup.setId(book.getId());
+                newGroup.setCoreMember(book.getId());
+                newGroup.addMember(book.getId());
+                newGroup.importCoreMember(book);
+
+                book.setCompareGroupId(newGroup.getId());
+
+                compareGroups.add(newGroup);
+            }
+        }
+
+        compareGroupRepository.insertBatch(compareGroups);
+
+        for (CompareGroup compareGroup : compareGroups) {
+            if (compareGroup.getSuggestGroupId() == null) {
+                boolean pass = false;
+
+                for (SuggestGroup suggestGroup : suggestGroups) {
+
+                    String guestTitle = compareGroup.getTitle();
+                    String hostTitle = suggestGroup.getTitle();
+
+                    double lcsSeqRate = StringUtils.calculateLCSubsequence(hostTitle, guestTitle).calculateSimilarity(6);
+                    double lcsStrRate = StringUtils.calculateLCSubstring(hostTitle, guestTitle).calculateSimilarity();
+                    if (lcsSeqRate >= 0.8 || lcsStrRate >= 0.7) {
+                        compareGroup.setSuggestGroupId(suggestGroup.getId());
+                        suggestGroup.addMember(compareGroup.getId());
+
+                        pass = true;
+                        break;
+                    }
+                }
+
+                if (!pass) {
+                    SuggestGroup newSuggestGroup = new SuggestGroup();
+                    newSuggestGroup.setId(compareGroup.getId());
+                    newSuggestGroup.setCoreMember(compareGroup.getCoreMember());
+                    newSuggestGroup.setTitle(compareGroup.getTitle());
+                    newSuggestGroup.addMember(compareGroup.getCoreMember());
+
+                    compareGroup.setSuggestGroupId(newSuggestGroup.getId());
+
+                    suggestGroups.add(newSuggestGroup);
+                }
+            }
+        }
     }
 }

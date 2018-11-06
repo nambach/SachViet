@@ -17,25 +17,18 @@ public class CompareGroup implements GenericEntity {
     @Id
     @Column(name = "`groupId`")
     private String id;
-    @Column(name = "`coreMember`")
     private String coreMember;
-    @Column(name = "`members`")
     private String members;
 
     // Core book information
-    @Column(name = "`title`")
     private String title;
-    @Column(name = "`authors`")
     private String authors;
-    @Column(name = "`image`")
     private String image;
-    @Column(name = "`minPrice`")
+    private String link;
     private String minPrice;
-    @Column(name = "`maxPrice`")
     private String maxPrice;
 
     // For suggestion
-    @Column(name = "`suggestGroupId`")
     private String suggestGroupId;
 
     public CompareGroup() {
@@ -78,6 +71,12 @@ public class CompareGroup implements GenericEntity {
     }
     public void setImage(String image) {
         this.image = image;
+    }
+    public String getLink() {
+        return link;
+    }
+    public void setLink(String link) {
+        this.link = link;
     }
     public String getMinPrice() {
         return minPrice;
@@ -187,6 +186,7 @@ public class CompareGroup implements GenericEntity {
                 ", title='" + title + '\'' +
                 ", authors='" + authors + '\'' +
                 ", image='" + image + '\'' +
+                ", link='" + link + '\'' +
                 ", minPrice='" + minPrice + '\'' +
                 ", maxPrice='" + maxPrice + '\'' +
                 ", suggestGroupId='" + suggestGroupId + '\'' +

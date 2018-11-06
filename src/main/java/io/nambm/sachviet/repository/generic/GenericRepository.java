@@ -24,4 +24,6 @@ public interface GenericRepository<T> {
     T findById(T entity);
 
     T delete(T entity);
+
+    void clearData();
 }

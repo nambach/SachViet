@@ -16,11 +16,7 @@ let appView = {
         img.setAttribute("alt", book["title"]);
 
         let title = node.querySelector(".book-title>a");
-        let bookLink = book["link"];
-        if (book["memberList"].length > 1) {
-            bookLink = `${pageContext}/compare/${book["id"]}`;
-        }
-        title.setAttribute("href", bookLink);
+        title.setAttribute("href", `${pageContext}/compare/${book["id"]}`);
         title.setAttribute("title", book["title"]);
         title.textContent = book["title"];
 
