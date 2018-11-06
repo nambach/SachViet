@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -44,5 +45,9 @@ public class RawBookRepositoryImpl extends GenericRepositoryImpl<RawBook> implem
 
     public List<RawBook> searchByIds(List<String> idList) {
         return searchExactColumn(idList, "id");
+    }
+
+    public List<RawBook> searchAvailableBooks(boolean status) {
+        return searchExactColumn(Collections.singletonList(String.valueOf(status)), "status");
     }
 }

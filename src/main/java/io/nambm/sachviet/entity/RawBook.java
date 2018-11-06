@@ -2,11 +2,12 @@ package io.nambm.sachviet.entity;
 
 import io.nambm.sachviet.model.book.Book;
 import io.nambm.sachviet.repository.generic.GenericEntity;
+import org.apache.commons.lang.StringUtils;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.text.Normalizer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,50 +17,39 @@ import java.util.Map;
 public class RawBook implements GenericEntity {
 
     @Id
-    @Column(name = "`id`")
     private String id;
-    @Column(name = "`siteName`")
     private String siteName;
 
     //Basic information
-    @Column(name = "`title`")
     private String title;
-    @Column(name = "`authors`")
     private String authors;
+    private String keyword;
 
     //Image
-    @Column(name = "`image`")
     private String image;
 
     //Link to original page
-    @Column(name = "`link`")
     private String link;
 
     //Prices
-    @Column(name = "`price`")
     private String price;
-    @Column(name = "`oldPrice`")
     private String oldPrice;
-    @Column(name = "`discountRate`")
     private String discountRate;
 
     //Status
-    @Column(name = "`status`")
     private String status;
-
-    @Column(name = "`compareGroupId`")
     private String compareGroupId;
-    @Column(name = "`suggestGroupId`")
     private String suggestGroupId;
 
     public RawBook() {
     }
 
-    public RawBook(String id, String siteName, String title, String authors, String image, String link, String price, String oldPrice, String discountRate, String status) {
+    public RawBook(String id, String siteName, String title, String authors, String keyword, String image, String link, String price, String oldPrice, String discountRate, String status) {
         this.id = id;
         this.siteName = siteName;
         this.title = title;
         this.authors = authors;
+        this.keyword = keyword;
         this.image = image;
         this.link = link;
         this.price = price;
@@ -90,6 +80,14 @@ public class RawBook implements GenericEntity {
 
     public void setAuthors(String authors) {
         this.authors = authors;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getImage() {
@@ -171,6 +169,7 @@ public class RawBook implements GenericEntity {
                 ", siteName='" + siteName + '\'' +
                 ", title='" + title + '\'' +
                 ", authors='" + authors + '\'' +
+                ", keyword='" + keyword + '\'' +
                 ", image='" + image + '\'' +
                 ", link='" + link + '\'' +
                 ", price='" + price + '\'' +
@@ -189,6 +188,11 @@ public class RawBook implements GenericEntity {
         String siteName = obj.getOrDefault("siteName", "");
         String title = obj.getOrDefault("title", "");
         String authors = obj.getOrDefault("authors", "");
+        String keyword = Normalizer
+                .normalize(title, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase();
+        keyword = StringUtils.replace(keyword, "đ", "d");
         String image = obj.getOrDefault("image", "");
         String link = obj.getOrDefault("link", "");
         String price = obj.getOrDefault("price", "");
@@ -196,7 +200,7 @@ public class RawBook implements GenericEntity {
         String discountRate = obj.getOrDefault("discountRate", "");
         String status = obj.getOrDefault("status", "");
 
-        return new RawBook(id, siteName, title, authors, image, link, price, oldPrice, discountRate, status);
+        return new RawBook(id, siteName, title, authors, keyword, image, link, price, oldPrice, discountRate, status);
     }
 
     public static List<RawBook> convert(List<Map<String, String>> list) {
@@ -205,9 +209,5 @@ public class RawBook implements GenericEntity {
             rawBooks.add(convert(item));
         }
         return rawBooks;
-    }
-
-    public Book toBook() {
-        return new Book(id, siteName, title, authors, image, link, price, oldPrice, status);
     }
 }

@@ -1,9 +1,11 @@
-package io.nambm.sachviet.model.book;
+package io.nambm.sachviet.crawler.impl;
 
 import io.nambm.sachviet.crawler.CrawlerResultProcessor;
 import io.nambm.sachviet.entity.RawBook;
+import io.nambm.sachviet.model.book.BookList;
 import io.nambm.sachviet.repository.RawBookRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,9 +13,10 @@ import java.util.stream.Collectors;
 public class BookProcessorImpl implements CrawlerResultProcessor {
 
     private boolean processObject = false;
+    private boolean processFragmentList = false;
     private boolean processList = false;
 
-    private BookList bookList;
+    private List<RawBook> bookList;
 
     private RawBookRepository rawBookRepository;
 
@@ -28,17 +31,26 @@ public class BookProcessorImpl implements CrawlerResultProcessor {
         this.processObject = processObject;
     }
 
+    public void setProcessFragmentList(boolean processFragmentList) {
+        this.processFragmentList = processFragmentList;
+    }
+
     public void setProcessList(boolean processList) {
         this.processList = processList;
     }
 
-    public BookList getBookList() {
+    public List<RawBook> getBookList() {
         return bookList;
     }
 
     @Override
     public boolean isNeededToProcessObject() {
         return processObject;
+    }
+
+    @Override
+    public boolean isNeededToProcessFragmentList() {
+        return processFragmentList;
     }
 
     @Override
@@ -53,15 +65,19 @@ public class BookProcessorImpl implements CrawlerResultProcessor {
     }
 
     @Override
+    public void processResultFragmentList(List<Map<String, String>> list) {
+        List<RawBook> fragmentRawBooks = RawBook.convert(list);
+
+        //fragmentRawBooks.forEach(System.out::println);
+
+        rawBookRepository.updateBatch(fragmentRawBooks);
+    }
+
+    @Override
     public void processResultList(List<Map<String, String>> list) {
         System.out.print("Total books: ");
         System.out.println(list.size());
 
-        bookList = new BookList();
-        bookList.setBook(list
-                .stream()
-                .map(RawBook::convert)
-                .map(RawBook::toBook)
-                .collect(Collectors.toList()));
+        bookList = RawBook.convert(list);
     }
 }

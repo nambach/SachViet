@@ -12,17 +12,15 @@ import javax.xml.validation.SchemaFactory;
 import java.io.File;
 
 public class JAXBUtils {
-    public static <T> T unmarshalling(String xmlFilePath, String xsdFilePath, Class<T> clazz) {
+    public static <T> T unmarshalling(File xmlFile, File xsdFile, Class<T> clazz) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            if (xsdFilePath != null) {
-                unmarshaller.setSchema(getSchema(xsdFilePath));
+            if (xsdFile != null) {
+                unmarshaller.setSchema(getSchema(xsdFile));
             }
-
-            File xmlFile = new File(xmlFilePath);
 
             return (T) unmarshaller.unmarshal(xmlFile);
         } catch (JAXBException e) {
@@ -80,9 +78,9 @@ public class JAXBUtils {
         }
     }
 
-    private static Schema getSchema(String xsdFilePath) throws SAXException {
+    private static Schema getSchema(File xsdFile) throws SAXException {
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        return factory.newSchema(new File(xsdFilePath));
+        return factory.newSchema(xsdFile);
     }
 }

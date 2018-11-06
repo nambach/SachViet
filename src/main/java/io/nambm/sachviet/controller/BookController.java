@@ -2,6 +2,7 @@ package io.nambm.sachviet.controller;
 
 import io.nambm.sachviet.entity.CompareGroup;
 import io.nambm.sachviet.entity.RawBook;
+import io.nambm.sachviet.model.ClassificationResult;
 import io.nambm.sachviet.model.book.CompareModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,4 +20,8 @@ public interface BookController {
     ResponseEntity<CompareModel> getCompareDetail(String compareGroupId);
 
     ModelAndView viewDetail(String compareId);
+
+    ResponseEntity<ClassificationResult> crawl();
+
+    ResponseEntity<String> stopCrawl();
 }

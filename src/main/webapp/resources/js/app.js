@@ -32,6 +32,7 @@ let appView = {
         if (book["minPrice"] !== book["maxPrice"]) {
             price.textContent = "Giá từ " + price.textContent;
         }
+        if (!price.textContent.includes("đ") && !price.textContent.includes("d")) price.textContent += "đ";
 
         let shop = node.querySelector(".book-shops");
         if (book["memberList"].length === 1) {

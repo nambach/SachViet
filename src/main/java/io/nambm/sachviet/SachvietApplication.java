@@ -1,5 +1,7 @@
 package io.nambm.sachviet;
 
+import io.nambm.sachviet.crawler.Crawler;
+import io.nambm.sachviet.crawler.impl.BookProcessorImpl;
 import io.nambm.sachviet.repository.generic.impl.GenericRepositoryImpl;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.SpringApplication;
@@ -20,5 +22,11 @@ public class SachvietApplication {
     @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public SessionFactory getSessionFactory() {
         return GenericRepositoryImpl.getFactory();
+    }
+
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public Crawler<BookProcessorImpl> getCrawler() {
+        return new Crawler<>();
     }
 }

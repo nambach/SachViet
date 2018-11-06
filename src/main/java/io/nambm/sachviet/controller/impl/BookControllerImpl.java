@@ -1,20 +1,29 @@
 package io.nambm.sachviet.controller.impl;
 
 import io.nambm.sachviet.controller.BookController;
+import io.nambm.sachviet.crawler.rule.Rules;
 import io.nambm.sachviet.entity.CompareGroup;
 import io.nambm.sachviet.entity.RawBook;
+import io.nambm.sachviet.model.ClassificationResult;
 import io.nambm.sachviet.model.book.CompareModel;
 import io.nambm.sachviet.service.BookService;
+import io.nambm.sachviet.utils.FileUtils;
+import io.nambm.sachviet.utils.JAXBUtils;
+import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -103,5 +112,27 @@ public class BookControllerImpl implements BookController {
         }
 
         return modelAndView;
+    }
+
+    @PostMapping("/books/crawl")
+    public ResponseEntity<ClassificationResult> crawl() {
+        ClassificationResult result = null;
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+            File ruleFile = ResourceUtils.getFile("classpath:static/xml/book-rule.xml");
+            Rules rules = JAXBUtils.unmarshalling(ruleFile, null, Rules.class);
+            result = bookService.crawlNewRawBooks(rules);
+        } catch (Exception e) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(result, status);
+    }
+
+    @PostMapping("/books/stop-crawling")
+    public ResponseEntity<String> stopCrawl() {
+        bookService.stopCrawling();
+        return new ResponseEntity<>("nothing", HttpStatus.OK);
     }
 }

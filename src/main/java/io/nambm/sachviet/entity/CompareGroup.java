@@ -25,6 +25,7 @@ public class CompareGroup implements GenericEntity {
     private String authors;
     private String image;
     private String link;
+    private String keyword;
     private String minPrice;
     private String maxPrice;
 
@@ -77,6 +78,12 @@ public class CompareGroup implements GenericEntity {
     }
     public void setLink(String link) {
         this.link = link;
+    }
+    public String getKeyword() {
+        return keyword;
+    }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
     public String getMinPrice() {
         return minPrice;
@@ -139,6 +146,8 @@ public class CompareGroup implements GenericEntity {
         this.title = coreMember.getTitle();
         this.authors = coreMember.getAuthors();
         this.image = coreMember.getImage();
+        this.link = coreMember.getLink();
+        this.keyword = coreMember.getKeyword();
         this.minPrice = coreMember.getPrice();
         this.maxPrice = coreMember.getPrice();
 
@@ -187,6 +196,7 @@ public class CompareGroup implements GenericEntity {
                 ", authors='" + authors + '\'' +
                 ", image='" + image + '\'' +
                 ", link='" + link + '\'' +
+                ", keyword='" + keyword + '\'' +
                 ", minPrice='" + minPrice + '\'' +
                 ", maxPrice='" + maxPrice + '\'' +
                 ", suggestGroupId='" + suggestGroupId + '\'' +

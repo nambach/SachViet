@@ -10,4 +10,6 @@ public interface RawBookRepository extends GenericRepository<RawBook> {
     List<RawBook> searchByNameOrAuthor(String name);
 
     List<RawBook> searchByIds(List<String> idList);
+
+    List<RawBook> searchAvailableBooks(boolean status);
 }

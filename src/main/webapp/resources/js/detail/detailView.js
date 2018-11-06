@@ -81,6 +81,7 @@ let detailView = {
 
         let price = node.querySelector(".item-title .price");
         price.textContent = book["price"];
+        if (!price.textContent.includes("đ") && !price.textContent.includes("d")) price.textContent += "đ";
 
         let shopLink = node.querySelector(".item-external-link a");
         shopLink.setAttribute("href", book["link"]);

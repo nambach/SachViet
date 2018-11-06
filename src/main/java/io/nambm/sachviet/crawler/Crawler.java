@@ -11,23 +11,24 @@ import org.w3c.dom.NodeList;
 
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Crawler<T extends CrawlerResultProcessor> {
     //crawlRules
     //-----
     //List<RawBook>
 
+    public static boolean STOP = false;
+
     private Rules rules;
     private List<Map<String, String>> results;
     private T resultProcessor;
 
-    public Crawler(String crawlRulePath) {
-        //get crawling rules
-        rules = JAXBUtils.unmarshalling(crawlRulePath, null, Rules.class);
+    public Crawler() {
+    }
+
+    public Crawler(Rules rules) {
+        this.rules = rules;
     }
 
     public void setRules(Rules rules) {
@@ -64,6 +65,7 @@ public class Crawler<T extends CrawlerResultProcessor> {
         System.out.println("===== Start crawling... =====");
 
         //ITERATE ALL RULES
+        master:
         for (Rule rule : rules.getRule()) {
 
             String baseUrl = rule.getBasedUrl();
@@ -130,6 +132,7 @@ public class Crawler<T extends CrawlerResultProcessor> {
                         break;//exit pages loop - go to next Topic
                     }
 
+                    List<Map<String, String>> batchObj = new ArrayList<>();
                     collectionLoop:
                     for (int j = 0; j < collection.getLength(); j++) {
                         Map<String, String> obj = new HashMap<>();
@@ -153,14 +156,26 @@ public class Crawler<T extends CrawlerResultProcessor> {
                             obj.put(name, value);
                         }//End one item
 
+                        batchObj.add(obj);
                         results.add(obj);
 
+                        //Process after one object is crawled
                         //System.out.println(obj);
                         if (resultProcessor != null && resultProcessor.isNeededToProcessObject()) {
                             resultProcessor.processResultObject(obj);
                         }
 
                     }//End items in one topic
+
+                    //Process after one page is crawled
+                    //System.out.println(batchObj.size());
+                    if (resultProcessor != null && resultProcessor.isNeededToProcessFragmentList()) {
+                        resultProcessor.processResultFragmentList(batchObj);
+                    }
+                    //Stop if demand
+                    if (Crawler.STOP) {
+                        break master;
+                    }
 
                 }//End topic
 

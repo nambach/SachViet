@@ -1,8 +1,12 @@
 package io.nambm.sachviet.service.impl;
 
+import io.nambm.sachviet.crawler.Crawler;
+import io.nambm.sachviet.crawler.impl.BookProcessorImpl;
+import io.nambm.sachviet.crawler.rule.Rules;
 import io.nambm.sachviet.entity.CompareGroup;
 import io.nambm.sachviet.entity.RawBook;
 import io.nambm.sachviet.entity.SuggestGroup;
+import io.nambm.sachviet.model.ClassificationResult;
 import io.nambm.sachviet.repository.CompareGroupRepository;
 import io.nambm.sachviet.repository.RawBookRepository;
 import io.nambm.sachviet.repository.SuggestGroupRepository;
@@ -85,16 +89,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void classifyBooks() {
-        List<RawBook> books = bookRepository.searchAll();
-
-        List<CompareGroup> compareGroups = compareGroupRepository.searchAll();
-        List<SuggestGroup> suggestGroups = suggestGroupRepository.searchAll();
-
+    public ClassificationResult classifyBooks(List<RawBook> rawBooks, List<CompareGroup> compareGroups, List<SuggestGroup> suggestGroups) {
         long start = System.currentTimeMillis();
 
         //Classify books for comparing
-        for (RawBook book : books) {
+        for (RawBook book : rawBooks) {
             boolean pass = false;
 
             CompareGroup candidateGroup = null;
@@ -140,8 +139,8 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        compareGroupRepository.insertBatch(compareGroups);
 
+        // Classify books for suggestion
         for (CompareGroup compareGroup : compareGroups) {
             if (compareGroup.getSuggestGroupId() == null) {
                 boolean pass = false;
@@ -175,5 +174,79 @@ public class BookServiceImpl implements BookService {
                 }
             }
         }
+
+        long end = System.currentTimeMillis();
+
+        return new ClassificationResult(rawBooks, compareGroups, suggestGroups, end - start);
+    }
+
+    @Override
+    public ClassificationResult reClassifyAllBooks() {
+        long start = System.currentTimeMillis();
+
+        List<RawBook> books = bookRepository.searchAvailableBooks(true);
+
+        compareGroupRepository.clearData();
+        suggestGroupRepository.clearData();
+
+        List<CompareGroup> compareGroups = new ArrayList<>();
+        List<SuggestGroup> suggestGroups = new ArrayList<>();
+
+        ClassificationResult result = classifyBooks(books, compareGroups, suggestGroups);
+
+        suggestGroupRepository.insertBatch(result.getSuggestGroups());
+        compareGroupRepository.insertBatch(result.getCompareGroups());
+
+        long end = System.currentTimeMillis();
+        result.setTotalMillis(end - start);
+
+        return result;
+    }
+
+    @Override
+    public ClassificationResult classifyNewRawBooks(List<RawBook> rawBooks) {
+        long start = System.currentTimeMillis();
+
+        //List<CompareGroup> compareGroups = compareGroupRepository.searchAll();
+        //List<SuggestGroup> suggestGroups = suggestGroupRepository.searchAll();
+
+        ClassificationResult result = reClassifyAllBooks();
+
+        suggestGroupRepository.updateBatch(result.getSuggestGroups());
+        compareGroupRepository.updateBatch(result.getCompareGroups());
+
+        long end = System.currentTimeMillis();
+        result.setTotalMillis(end - start);
+
+        return result;
+    }
+
+    @Autowired
+    private Crawler<BookProcessorImpl> crawler;
+
+    @Override
+    public ClassificationResult crawlNewRawBooks(Rules rules) {
+        long start = System.currentTimeMillis();
+
+        BookProcessorImpl bookProcessor = new BookProcessorImpl();
+        bookProcessor.setProcessFragmentList(true);
+        bookProcessor.setProcessList(true);
+        bookProcessor.setRawBookRepository(bookRepository);
+
+        crawler.setRules(rules);
+        crawler.setResultProcessor(bookProcessor);
+        crawler.crawl();
+
+        ClassificationResult result = classifyNewRawBooks(bookProcessor.getBookList());
+
+        long end = System.currentTimeMillis();
+        result.setTotalMillis(end - start);
+
+        return result;
+    }
+
+    @Override
+    public void stopCrawling() {
+        Crawler.STOP = true;
     }
 }
