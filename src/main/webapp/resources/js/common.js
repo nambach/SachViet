@@ -78,9 +78,11 @@ function removeNode(node) {
 }
 
 function showLoader() {
+    if (document.stopLoading) return;
     document.querySelector("div.loader").classList.remove("hidden");
 }
 
 function hideLoader() {
+    if (document.stopLoading) document.stopLoading = false;
     document.querySelector("div.loader").classList.add("hidden");
 }

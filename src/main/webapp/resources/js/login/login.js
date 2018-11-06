@@ -55,7 +55,7 @@ let loginModel = {
             { username, password },
             true,
             (data) => {
-                window.location.replace(pageContext + "/home");
+                window.location.replace(pageContext + "/admin");
             },
             (data) => {
                 loginView.showError();

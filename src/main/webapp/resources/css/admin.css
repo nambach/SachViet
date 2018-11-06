@@ -1,0 +1,45 @@
+.input {
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 250px;
+    font-size: 13px;
+    height: 30px;
+    color: #3a3a3a;
+    border: 1px solid #cfcfcf;
+}
+.content-aside-item {
+    border-bottom-style: solid;
+}
+.content-aside-item.selected {
+    background-color: #2aaac9;
+    border-color: #2aaac9;
+    color: white;
+}
+.content-aside-item.selected:hover {
+    cursor: auto;
+    background-color: #2aaac9;
+    border-color: #2aaac9;
+    color: white;
+}
+
+.oldPrice {
+    font-size: 13px;
+    text-decoration: line-through;
+    color: tomato;
+}
+
+.button {
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    background: #99d1d5;
+    color: #0d8395;
+    font-size: 15px;
+    border: none;
+    margin: 5px;
+}
+.button[disabled] {
+    cursor: not-allowed;
+    background: #eee;
+    color: gray;
+}

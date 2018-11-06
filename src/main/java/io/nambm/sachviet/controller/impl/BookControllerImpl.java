@@ -5,13 +5,11 @@ import io.nambm.sachviet.crawler.rule.Rules;
 import io.nambm.sachviet.entity.CompareGroup;
 import io.nambm.sachviet.entity.RawBook;
 import io.nambm.sachviet.model.ClassificationResult;
+import io.nambm.sachviet.model.book.BookList;
 import io.nambm.sachviet.model.book.CompareModel;
 import io.nambm.sachviet.service.BookService;
-import io.nambm.sachviet.utils.FileUtils;
 import io.nambm.sachviet.utils.JAXBUtils;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +25,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionScope
@@ -39,15 +38,15 @@ public class BookControllerImpl implements BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books/v-1/search")
-    public ResponseEntity<List<RawBook>> searchBook(@RequestParam String searchValue) {
-        List<RawBook> books;
+    @GetMapping(value = "/books/v-1/search", produces = { "application/xml", "text/xml" })
+    public ResponseEntity<BookList> searchBook(@RequestParam String searchValue) {
+        List<RawBook> rawBooks;
+        rawBooks = bookService.searchBook(searchValue);
 
-        //pre-process search value
+        BookList bookList = new BookList();
+        bookList.setBook(rawBooks.stream().map(RawBook::toBook).collect(Collectors.toList()));
 
-        books = bookService.searchBook(searchValue);
-
-        return new ResponseEntity<>(books, HttpStatus.OK);
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
     @GetMapping("/books/search")

@@ -2,9 +2,11 @@ package io.nambm.sachviet.controller.impl;
 
 import io.nambm.sachviet.configuration.AppConfig;
 import io.nambm.sachviet.controller.LoginController;
+import io.nambm.sachviet.utils.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 @Controller
 @SessionScope
 public class LoginControllerImpl implements LoginController {
 
     private int a = 0;
 
-    @GetMapping("/admin")
+    @GetMapping("/back-door")
     public ModelAndView defaultPage() {
         return new ModelAndView("login/login");
     }
@@ -26,6 +32,21 @@ public class LoginControllerImpl implements LoginController {
     @GetMapping("/")
     public ModelAndView home() {
         return new ModelAndView("search/search");
+    }
+
+    @GetMapping("/admin")
+    public ModelAndView admin() {
+        ModelAndView modelAndView = new ModelAndView("admin/admin");
+
+        try {
+            File file = ResourceUtils.getFile("classpath:static/xsl/book-search.xsl");
+            String xsl = FileUtils.readTextContent(file.getAbsolutePath());
+
+            modelAndView.addObject("xsl", xsl);
+        } catch (FileNotFoundException ignored) {
+        }
+
+        return modelAndView;
     }
 
     @PostMapping("/login")

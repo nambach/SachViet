@@ -210,4 +210,8 @@ public class RawBook implements GenericEntity {
         }
         return rawBooks;
     }
+
+    public Book toBook() {
+        return new Book(id, siteName, title, authors, keyword, image, link, price, oldPrice, discountRate, status);
+    }
 }

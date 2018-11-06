@@ -41,7 +41,11 @@ public class BookServiceImpl implements BookService {
     public List<RawBook> searchBook(String searchValue) {
         List<RawBook> books;
 
-        books = bookRepository.searchByNameOrAuthor(searchValue);
+        if (searchValue.trim().equals("")) {
+            books = bookRepository.searchAll();
+        } else {
+            books = bookRepository.searchByNameOrAuthor(searchValue);
+        }
 
         return books;
     }

@@ -1,0 +1,29 @@
+﻿table {
+    border-collapse: collapse;
+}
+.table {
+    width: 100%;
+    background-color: transparent;
+}
+.table th, .table td {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+.table th {
+    text-align: left;
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+.table th.w100, .table td.w100 {
+    max-width: 100px;
+}
+.table th.w200, .table td.w200 {
+    max-width: 200px;
+}
+.table tr:hover {
+    background-color: #eee;
+}
+.table thead tr {
+    background-color: transparent !important;
+}

@@ -8,6 +8,7 @@ public class Book {
     //Basic information
     private String title;
     private String authors;
+    private String keyword;
 
     //Image
     private String image;
@@ -18,6 +19,7 @@ public class Book {
     //Prices
     private String price;
     private String oldPrice;
+    private String discountRate;
 
     //Status
     private String status;
@@ -25,15 +27,17 @@ public class Book {
     public Book() {
     }
 
-    public Book(String id, String siteName, String title, String authors, String image, String link, String price, String oldPrice, String status) {
+    public Book(String id, String siteName, String title, String authors, String keyword, String image, String link, String price, String oldPrice, String discountRate, String status) {
         this.id = id;
         this.siteName = siteName;
         this.title = title;
         this.authors = authors;
+        this.keyword = keyword;
         this.image = image;
         this.link = link;
         this.price = price;
         this.oldPrice = oldPrice;
+        this.discountRate = discountRate;
         this.status = status;
     }
 
@@ -69,6 +73,14 @@ public class Book {
         this.authors = authors;
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     public String getImage() {
         return image;
     }
@@ -99,6 +111,14 @@ public class Book {
 
     public void setOldPrice(String oldPrice) {
         this.oldPrice = oldPrice;
+    }
+
+    public String getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(String discountRate) {
+        this.discountRate = discountRate;
     }
 
     public String getStatus() {
