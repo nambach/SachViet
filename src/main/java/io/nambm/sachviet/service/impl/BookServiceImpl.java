@@ -200,6 +200,8 @@ public class BookServiceImpl implements BookService {
         long end = System.currentTimeMillis();
         result.setTotalMillis(end - start);
 
+        System.out.println("Finish classifying after " + result.getTotalMillis() + " millis");
+
         return result;
     }
 
@@ -233,6 +235,7 @@ public class BookServiceImpl implements BookService {
         bookProcessor.setProcessList(true);
         bookProcessor.setRawBookRepository(bookRepository);
 
+        Crawler.STOP = false;
         crawler.setRules(rules);
         crawler.setResultProcessor(bookProcessor);
         crawler.crawl();

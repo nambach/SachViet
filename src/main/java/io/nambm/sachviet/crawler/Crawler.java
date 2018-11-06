@@ -187,5 +187,7 @@ public class Crawler<T extends CrawlerResultProcessor> {
         if (resultProcessor != null && resultProcessor.isNeededToProcessList()) {
             resultProcessor.processResultList(results);
         }
+
+        System.out.println("Finish crawling");
     }
 }
