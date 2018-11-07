@@ -21,6 +21,8 @@
         <mapping class="io.nambm.sachviet.entity.SuggestGroup"/>
         <mapping class="io.nambm.sachviet.entity.Traffic"/>
         <mapping class="io.nambm.sachviet.entity.User"/>
+        <mapping class="io.nambm.sachviet.entity.Category"/>
+        <mapping class="io.nambm.sachviet.entity.CateRelation"/>
 
     </session-factory>
 </hibernate-configuration>
