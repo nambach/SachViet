@@ -13,5 +13,13 @@ let searchModel = {
             (data) => {
                 alert("Some error happened");
             });
+    },
+
+    getAllCategory(callback) {
+        callAjax("/categories/all", GET, {}, true, callback);
+    },
+
+    getBooksByCategory(cateId, callback) {
+        callAjax("/books/cate", GET, { cateId }, true, callback);
     }
 };

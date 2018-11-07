@@ -144,6 +144,7 @@
         pageContext = "${pageContext.request.contextPath}";
         searchView.init();
         searchView.bindElements();
+        searchView.renderCategoryBar();
     });
 </script>
 </html>

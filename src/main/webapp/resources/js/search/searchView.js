@@ -4,6 +4,8 @@ let searchView = {
     btnClearSearch: null,
     btnSearch: null,
 
+    cateContainer: null,
+
     templateBookItem: null,
     containerResult: null,
 
@@ -23,6 +25,8 @@ let searchView = {
         self.txtSearch = document.querySelector("div.searchBox>input[type='text']");
         self.btnClearSearch = document.querySelector("div.searchBox>span");
         self.btnSearch = document.querySelector("div.searchBox>button");
+
+        self.cateContainer = document.querySelector(".content-aside div");
 
         self.templateBookItem = document.querySelector("[data-book-template]");
         self.containerResult = document.querySelector("div.book-list");
@@ -120,6 +124,34 @@ let searchView = {
             return false;
         }
         return self.dataSource.filter(filterBookByShops);
+    },
+
+    renderCategoryBar() {
+        let self = searchView;
+
+        searchModel.getAllCategory(data => {
+            data = JSON.parse(data);
+
+            clearChildNodes(self.cateContainer);
+
+            for (let i = 0; i < data.length; i++) {
+                let category = data[i];
+                let node = document.createElement("div");
+                node.classList.add("content-aside-item");
+                node.textContent = category["name"];
+
+                function searchByCateId() {
+                    searchModel.getBooksByCategory(category["id"], data => {
+                        data = JSON.parse(data);
+                        self.dataSource = data;
+                        self.renderTotalSearchResult(data);
+                    })
+                }
+
+                node.addEventListener("click", searchByCateId);
+                self.cateContainer.appendChild(node);
+            }
+        });
     },
 
     newBookItem(book) {
