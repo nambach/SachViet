@@ -23,6 +23,11 @@ public class Category implements GenericEntity {
         this.parent = parent;
     }
 
+    public Category(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Category() {
     }
 

@@ -5,9 +5,7 @@ import io.nambm.sachviet.entity.RawBook;
 import io.nambm.sachviet.model.book.BookList;
 import io.nambm.sachviet.repository.RawBookRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BookProcessorImpl implements CrawlerResultProcessor {
@@ -17,6 +15,9 @@ public class BookProcessorImpl implements CrawlerResultProcessor {
     private boolean processList = false;
 
     private List<RawBook> bookList;
+
+    private Map<String, String> categoryNames;
+    private Map<String, Set<String>> categoryMapping;
 
     private RawBookRepository rawBookRepository;
 
@@ -41,6 +42,22 @@ public class BookProcessorImpl implements CrawlerResultProcessor {
 
     public List<RawBook> getBookList() {
         return bookList;
+    }
+
+    public Map<String, Set<String>> getCategoryMapping() {
+        return categoryMapping;
+    }
+
+    public void setCategoryMapping(Map<String, Set<String>> categoryMapping) {
+        this.categoryMapping = categoryMapping;
+    }
+
+    public Map<String, String> getCategoryNames() {
+        return categoryNames;
+    }
+
+    public void setCategoryNames(Map<String, String> categoryNames) {
+        this.categoryNames = categoryNames;
     }
 
     @Override
@@ -71,6 +88,24 @@ public class BookProcessorImpl implements CrawlerResultProcessor {
         //fragmentRawBooks.forEach(System.out::println);
 
         rawBookRepository.updateBatch(fragmentRawBooks);
+
+        //Classify category
+        if (categoryNames == null) {
+            categoryNames = new HashMap<>();
+        }
+        if (categoryMapping == null) {
+            categoryMapping = new HashMap<>();
+        }
+        if (!list.isEmpty()) {
+            //Add a topic with all its books
+            String topicCode = list.get(0).get("topicCode");
+            Set<String> mapping = categoryMapping.computeIfAbsent(topicCode, k -> new HashSet<>());
+            mapping.addAll(fragmentRawBooks.stream().map(RawBook::getId).collect(Collectors.toList()));
+
+            //Add topic name
+            String topicName = list.get(0).get("topicName");
+            categoryNames.put(topicCode, topicName);
+        }
     }
 
     @Override

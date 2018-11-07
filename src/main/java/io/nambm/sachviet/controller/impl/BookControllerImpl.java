@@ -60,6 +60,13 @@ public class BookControllerImpl implements BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
+    @GetMapping("/books/cate")
+    public ResponseEntity<List<CompareGroup>> getBooksByCategory(@RequestParam String cateId) {
+        List<CompareGroup> books;
+        books = bookService.getBooksByCategory(cateId);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
     @GetMapping("/books/suggest")
     public ResponseEntity<List<CompareGroup>> getSuggestedBooks(@RequestParam String suggestId) {
         List<CompareGroup> books = new LinkedList<>();

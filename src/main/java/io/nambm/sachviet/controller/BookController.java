@@ -15,6 +15,8 @@ public interface BookController {
 
     ResponseEntity<List<CompareGroup>> searchBooksForCompare(String searchValue);
 
+    ResponseEntity<List<CompareGroup>> getBooksByCategory(String cateId);
+
     ResponseEntity<List<CompareGroup>> getSuggestedBooks(String suggestId);
 
     ResponseEntity<CompareModel> getCompareDetail(String compareGroupId);

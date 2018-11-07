@@ -140,6 +140,7 @@ public class Crawler<T extends CrawlerResultProcessor> {
 
                         obj.put("siteName", siteName);
                         obj.put("topicCode", topicCode);
+                        obj.put("topicName", topicName);
 
                         for (ItemDetail detailXPath : itemRule.getDetailXpath()) {
                             String name = detailXPath.getDetailName();

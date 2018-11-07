@@ -3,23 +3,17 @@ package io.nambm.sachviet.service.impl;
 import io.nambm.sachviet.crawler.Crawler;
 import io.nambm.sachviet.crawler.impl.BookProcessorImpl;
 import io.nambm.sachviet.crawler.rule.Rules;
-import io.nambm.sachviet.entity.CompareGroup;
-import io.nambm.sachviet.entity.RawBook;
-import io.nambm.sachviet.entity.SuggestGroup;
+import io.nambm.sachviet.entity.*;
 import io.nambm.sachviet.model.ClassificationResult;
-import io.nambm.sachviet.repository.CompareGroupRepository;
-import io.nambm.sachviet.repository.RawBookRepository;
-import io.nambm.sachviet.repository.SuggestGroupRepository;
-import io.nambm.sachviet.repository.TrafficRepository;
+import io.nambm.sachviet.repository.*;
 import io.nambm.sachviet.service.BookService;
 import io.nambm.sachviet.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @SessionScope
@@ -33,12 +27,17 @@ public class BookServiceImpl implements BookService {
 
     private final TrafficRepository trafficRepository;
 
+    private final CategoryRepository categoryRepository;
+    private final CateRelationRepository cateRelationRepository;
+
     @Autowired
-    public BookServiceImpl(RawBookRepository bookRepository, CompareGroupRepository compareGroupRepository, SuggestGroupRepository suggestGroupRepository, TrafficRepository trafficRepository) {
+    public BookServiceImpl(RawBookRepository bookRepository, CompareGroupRepository compareGroupRepository, SuggestGroupRepository suggestGroupRepository, TrafficRepository trafficRepository, CategoryRepository categoryRepository, CateRelationRepository cateRelationRepository) {
         this.bookRepository = bookRepository;
         this.compareGroupRepository = compareGroupRepository;
         this.suggestGroupRepository = suggestGroupRepository;
         this.trafficRepository = trafficRepository;
+        this.categoryRepository = categoryRepository;
+        this.cateRelationRepository = cateRelationRepository;
     }
 
     @Override
@@ -108,6 +107,17 @@ public class BookServiceImpl implements BookService {
 
         SuggestGroup suggestGroup = suggestGroups.get(0);
         result = compareGroupRepository.searchByIds(suggestGroup.getMemberList());
+
+        return result;
+    }
+
+    @Override
+    public List<CompareGroup> getBooksByCategory(String cateId) {
+        List<CompareGroup> result;
+
+        List<String> bookIds = cateRelationRepository.searchBookIdByCategory(cateId);
+
+        result = compareGroupRepository.searchByIds(bookIds);
 
         return result;
     }
@@ -264,6 +274,10 @@ public class BookServiceImpl implements BookService {
         crawler.setResultProcessor(bookProcessor);
         crawler.crawl();
 
+        //Process categories
+        processCategoryAfterCrawling();
+
+        //Classify books for comparing
         ClassificationResult result = classifyNewRawBooks(bookProcessor.getBookList());
 
         long end = System.currentTimeMillis();
@@ -273,6 +287,30 @@ public class BookServiceImpl implements BookService {
         result.setRawBooks(RawBook.convert(crawler.getResults()));
 
         return result;
+    }
+
+    private void processCategoryAfterCrawling() {
+        Map<String, String> categoryNames = crawler.getResultProcessor().getCategoryNames();
+        Map<String, Set<String>> categoryMapping = crawler.getResultProcessor().getCategoryMapping();
+
+        //Convert categoryNames into list of Category Entity
+        List<Category> categories = categoryNames.entrySet()
+                .stream()
+                .map(entry -> new Category(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+
+        //Convert categoryMapping into list of CateRelation Entity
+        List<CateRelation> cateRelations = new ArrayList<>();
+        categoryMapping.forEach((cateId, bookIds) -> {
+            List<CateRelation> list = bookIds.stream()
+                    .map(bookId -> new CateRelation(cateId, bookId))
+                    .collect(Collectors.toList());
+
+            cateRelations.addAll(list);
+        });
+
+        categoryRepository.updateBatch(categories);
+        cateRelationRepository.updateBatch(cateRelations);
     }
 
     @Override

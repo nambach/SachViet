@@ -22,6 +22,8 @@ public interface BookService {
 
     List<CompareGroup> getSuggestedBooks(String suggestId);
 
+    List<CompareGroup> getBooksByCategory(String cateId);
+
     //Classification from here
     ClassificationResult classifyBooks(List<RawBook> rawBooks, List<CompareGroup> compareGroups, List<SuggestGroup> suggestGroups);
 
