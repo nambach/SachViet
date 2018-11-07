@@ -85,11 +85,16 @@ public class BookServiceImpl implements BookService {
     public List<CompareGroup> searchTopFiveBooks() {
         List<String> idList = trafficRepository.getTopFiveCompareGroup();
 
+        List<CompareGroup> result = new ArrayList<>();
         List<CompareGroup> top5Groups;
 
         top5Groups = compareGroupRepository.searchByIds(idList);
 
-        return top5Groups;
+        for (String id : idList) {
+            result.add(top5Groups.stream().filter(compareGroup -> compareGroup.getId().equals(id)).findFirst().get());
+        }
+
+        return result;
     }
 
     @Override
