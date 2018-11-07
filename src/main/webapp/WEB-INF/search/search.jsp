@@ -93,8 +93,8 @@
         <div class="vertical-center" style="height: 50px; padding-left: 25px">
             <p>
                 <span style="font-weight: bold">Kết quả tìm kiếm:</span>
-                &nbsp;<span id="resultMessage"> Có <span id="numberOfResults">0</span> kết quả cho sản phẩm này</span>
-                <span class="pagination noselect-all">
+                &nbsp;<span class="hidden" id="resultMessage"> Có <span id="numberOfResults">0</span> kết quả cho sản phẩm này</span>
+                <span class="pagination noselect-all hidden">
                     <a data-type="btnFirst">&#171;</a>
                     <a data-type="btnFirstStub" class="hidden">&#171;</a>
 

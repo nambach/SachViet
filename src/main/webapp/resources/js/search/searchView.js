@@ -102,6 +102,8 @@ let searchView = {
         paginationView.trigger();
 
         searchView.txtResultNumber.textContent = data.length;
+        searchView.txtResultMessage.classList.remove("hidden");
+        document.querySelector(".pagination").classList.remove("hidden");
     },
 
     filterDataSourceByChkValues() {
