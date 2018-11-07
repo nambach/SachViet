@@ -55,7 +55,9 @@ let loginModel = {
             { username, password },
             true,
             (data) => {
-                window.location.replace(pageContext + "/admin");
+                let destination = "";
+                if (data === "admin") destination = "admin";
+                window.location.replace(`${pageContext}/${destination}`);
             },
             (data) => {
                 loginView.showError();

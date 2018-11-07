@@ -20,6 +20,7 @@
         <mapping class="io.nambm.sachviet.entity.CompareGroup"/>
         <mapping class="io.nambm.sachviet.entity.SuggestGroup"/>
         <mapping class="io.nambm.sachviet.entity.Traffic"/>
+        <mapping class="io.nambm.sachviet.entity.User"/>
 
     </session-factory>
 </hibernate-configuration>

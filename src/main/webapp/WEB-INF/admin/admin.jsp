@@ -23,7 +23,7 @@
     </div>
     <div class="header-content" style="align-items: flex-end">
         <p style="color: white; font-size: 18px; margin-right: 10%">
-            Xin chào, <b>Nam Bach</b>
+            Xin chào, <b>${sessionScope.user.name}</b>
         </p>
     </div>
 </div>
@@ -57,8 +57,8 @@
             <div class="separator"></div>
 
             <div class="filter-group">
-                <div class="filter-name">Nam Bach</div>
-                <div><a href="${pageContext.request.contextPath}/">Đăng xuất</a></div>
+                <div class="filter-name">${sessionScope.user.username}</div>
+                <div><a href="${pageContext.request.contextPath}/logout">Đăng xuất</a></div>
             </div>
 
             <div class="separator"></div>

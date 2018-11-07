@@ -2,7 +2,10 @@ package io.nambm.sachviet.controller.impl;
 
 import io.nambm.sachviet.configuration.AppConfig;
 import io.nambm.sachviet.controller.LoginController;
+import io.nambm.sachviet.entity.User;
+import io.nambm.sachviet.service.UserService;
 import io.nambm.sachviet.utils.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,7 +25,14 @@ import java.io.FileReader;
 @SessionScope
 public class LoginControllerImpl implements LoginController {
 
-    private int a = 0;
+    private static final String USER_ATTR = "user";
+
+    private final UserService userService;
+
+    @Autowired
+    public LoginControllerImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/back-door")
     public ModelAndView defaultPage() {
@@ -38,12 +48,22 @@ public class LoginControllerImpl implements LoginController {
     public ModelAndView admin() {
         ModelAndView modelAndView = new ModelAndView("admin/admin");
 
-        try {
-            File file = ResourceUtils.getFile("classpath:static/xsl/book-search.xsl");
-            String xsl = FileUtils.readTextContent(file.getAbsolutePath());
+        if (AppConfig.getSession().getAttribute(USER_ATTR) != null) {
+            try {
+                User user = (User) AppConfig.getSession().getAttribute(USER_ATTR);
+                if (!User.ROLE_ADMIN.equals(user.getRole())) {
+                    modelAndView.setViewName("redirect:/404");
+                    throw new FileNotFoundException("invalid role");
+                }
 
-            modelAndView.addObject("xsl", xsl);
-        } catch (FileNotFoundException ignored) {
+                File file = ResourceUtils.getFile("classpath:static/xsl/book-search.xsl");
+                String xsl = FileUtils.readTextContent(file.getAbsolutePath());
+
+                modelAndView.addObject("xsl", xsl);
+            } catch (FileNotFoundException ignored) {
+            }
+        } else {
+            modelAndView.setViewName("redirect:/404");
         }
 
         return modelAndView;
@@ -52,17 +72,19 @@ public class LoginControllerImpl implements LoginController {
     @PostMapping("/login")
     public ResponseEntity<String> login2(@RequestParam String username,
                                          @RequestParam String password) {
-        try {
-            if ("user".equals(username) && "pwd".equals(password)) {
-                AppConfig.getSession().setAttribute("username", "Nam Bach");
-                AppConfig.getSession().setAttribute("number", a++);
-                return new ResponseEntity<>("success", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
-            }
-        } catch (Exception e) {
+        User user = userService.checkLogin(username, password);
+        if (user != null) {
+            AppConfig.getSession().setAttribute(USER_ATTR, user);
+            return new ResponseEntity<>(user.getRole(), HttpStatus.OK);
+        } else {
             return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout() {
+        AppConfig.getSession().removeAttribute(USER_ATTR);
+        return new ModelAndView("redirect:/");
     }
 
     @GetMapping("/404")
