@@ -37,13 +37,13 @@
             <div class="content-aside-item selected" data-option="book">
                 Quản lý Sách
             </div>
-            <div class="content-aside-item" data-option="category">
+            <div class="content-aside-item hidden" data-option="category">
                 Quản lý Danh mục
             </div>
             <div class="content-aside-item" data-option="crawl">
                 Khai thác dữ liệu
             </div>
-            <div class="content-aside-item" data-option="stat">
+            <div class="content-aside-item hidden" data-option="stat">
                 Thống kê
             </div>
         </div>

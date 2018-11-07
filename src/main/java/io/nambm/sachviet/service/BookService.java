@@ -18,6 +18,8 @@ public interface BookService {
 
     List<CompareGroup> searchBookCompareByIds(List<String> ids);
 
+    List<CompareGroup> searchTopFiveBooks();
+
     List<CompareGroup> getSuggestedBooks(String suggestId);
 
     //Classification from here

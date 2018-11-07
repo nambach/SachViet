@@ -10,6 +10,7 @@ import io.nambm.sachviet.model.ClassificationResult;
 import io.nambm.sachviet.repository.CompareGroupRepository;
 import io.nambm.sachviet.repository.RawBookRepository;
 import io.nambm.sachviet.repository.SuggestGroupRepository;
+import io.nambm.sachviet.repository.TrafficRepository;
 import io.nambm.sachviet.service.BookService;
 import io.nambm.sachviet.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,14 @@ public class BookServiceImpl implements BookService {
 
     private final SuggestGroupRepository suggestGroupRepository;
 
+    private final TrafficRepository trafficRepository;
+
     @Autowired
-    public BookServiceImpl(RawBookRepository bookRepository, CompareGroupRepository compareGroupRepository, SuggestGroupRepository suggestGroupRepository) {
+    public BookServiceImpl(RawBookRepository bookRepository, CompareGroupRepository compareGroupRepository, SuggestGroupRepository suggestGroupRepository, TrafficRepository trafficRepository) {
         this.bookRepository = bookRepository;
         this.compareGroupRepository = compareGroupRepository;
         this.suggestGroupRepository = suggestGroupRepository;
+        this.trafficRepository = trafficRepository;
     }
 
     @Override
@@ -75,6 +79,17 @@ public class BookServiceImpl implements BookService {
         groups = compareGroupRepository.searchByIds(ids);
 
         return groups;
+    }
+
+    @Override
+    public List<CompareGroup> searchTopFiveBooks() {
+        List<String> idList = trafficRepository.getTopFiveCompareGroup();
+
+        List<CompareGroup> top5Groups;
+
+        top5Groups = compareGroupRepository.searchByIds(idList);
+
+        return top5Groups;
     }
 
     @Override

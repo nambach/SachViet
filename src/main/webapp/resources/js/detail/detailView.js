@@ -5,6 +5,9 @@ let detailView = {
 
     suggestContainer: null,
 
+    templateTopItem: null,
+    topBooksContainer: null,
+
     compareId: null,
     suggestId: null,
     compareGroup: null,
@@ -21,6 +24,11 @@ let detailView = {
         self.compareContainer = document.querySelector(".group-info");
 
         self.suggestContainer = document.querySelector(".suggest-list");
+
+        self.templateTopItem = document.querySelector(".right-container .item");
+        self.topBooksContainer = document.querySelector(".right-container");
+
+        detailModel.addBookLog(compareId);
     },
 
     renderSuggestGroup() {
@@ -53,6 +61,20 @@ let detailView = {
                 let compareItemData = compareItems[i];
                 let newNode = self.newCompareItem(compareItemData);
                 self.compareContainer.appendChild(newNode);
+            }
+        });
+    },
+
+    renderTopBooks() {
+        let self = detailView;
+
+        detailModel.getTopBooks(data => {
+            data = JSON.parse(data);
+            let topItems = data;
+            for(let i = 0; i < topItems.length; i++) {
+                let topItemData = topItems[i];
+                let newNode = self.newTopBookItem(topItemData);
+                self.topBooksContainer.appendChild(newNode);
             }
         });
     },
@@ -94,6 +116,35 @@ let detailView = {
 
     newSuggestItem(book) {
         return appView.newBookItem(book);
-    }
+    },
+
+    newTopBookItem(book) {
+        let node = detailView.templateTopItem.cloneNode(true);
+        node.classList.remove("hidden");
+
+        let img = node.querySelector("img");
+        img.setAttribute("src", book["image"]);
+        img.setAttribute("title", book["title"]);
+        img.setAttribute("alt", book["title"]);
+
+        let title = node.querySelector(".title a");
+        title.setAttribute("href", book["link"]);
+        title.setAttribute("title", book["title"]);
+        title.textContent = book["title"];
+
+        let author = node.querySelector(".authors");
+        if (book["authors"] && book["authors"].trim() !== "") {
+            author.textContent = book["authors"];
+        } else {
+            author.classList.add("hidden");
+        }
+
+        let price = node.querySelector(".price");
+        price.textContent = book["minPrice"];
+        if (!price.textContent.includes("đ") && !price.textContent.includes("d")) price.textContent += "đ";
+        price.textContent = price.textContent.replace(".", ",");
+
+        return node;
+    },
 
 };

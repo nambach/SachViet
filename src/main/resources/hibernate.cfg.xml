@@ -19,6 +19,7 @@
         <mapping class="io.nambm.sachviet.entity.RawBook"/>
         <mapping class="io.nambm.sachviet.entity.CompareGroup"/>
         <mapping class="io.nambm.sachviet.entity.SuggestGroup"/>
+        <mapping class="io.nambm.sachviet.entity.Traffic"/>
 
     </session-factory>
 </hibernate-configuration>

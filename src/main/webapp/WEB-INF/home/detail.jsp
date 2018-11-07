@@ -76,7 +76,7 @@
         <div class="title">
             Sách được xem nhiều nhất
         </div>
-        <div class="item">
+        <div class="item hidden">
             <div class="img box-shadow">
                 <img class="box-shadow" src="" alt="" title=""/>
             </div>
@@ -122,6 +122,7 @@
         detailView.init("${compareId}", "${suggestId}");
         detailView.renderCompareGroup();
         detailView.renderSuggestGroup();
+        detailView.renderTopBooks();
     });
 </script>
 </html>
