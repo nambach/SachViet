@@ -109,10 +109,13 @@ let adminView = {
                     data = JSON.parse(data);
 
                     self.btnCrawl.removeAttribute("disabled");
+                    self.btnStopCrawl.setAttribute("disabled", "disabled");
                     self.txtMsgWait.classList.add("hidden");
 
                     self.txtMsgResult.classList.remove("hidden");
-                    self.txtMsgResult.textContent = `Hoàn tất trong ${data["totalMillis"]} mili giây`;
+                    self.txtMsgResult.innerHTML = `Hoàn tất trong ${data["totalMillis"]} milli giây`
+                        + `<br/>Có ${data["rawBooks"].length} sách được cào`
+                        + `<br/>Đã phân loại thành ${data["compareGroups"].length} nhóm so sánh và ${data["suggestGroups"].length} nhóm gợi ý`;
                 },
                 () => {
                     alert("Some error happened!!!");
@@ -127,7 +130,7 @@ let adminView = {
 
                 self.txtMsgWait.classList.add("hidden");
                 self.txtMsgResult.classList.remove("hidden");
-                self.txtMsgResult.textContent = `Đang dừng, xin chờ...`;
+                self.txtMsgResult.textContent = `Đã dừng, đang phân loại, xin chờ...`;
             })
         });
     }

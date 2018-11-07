@@ -9,13 +9,13 @@
             <topic>
                 <topicName>Sách vừa phát hành trong tuần</topicName>
                 <topicCode>newArr</topicCode>
-                <url incrementParam="?page={i}" to="30">https://www.vinabook.com/sach-moi-phat-hanh</url>
+                <url incrementParam="?page={i}" to="0">https://www.vinabook.com/sach-moi-phat-hanh</url>
                 <fragmentXpath>//table[contains(@class, "template-products")]</fragmentXpath>
             </topic>
             <topic>
                 <topicName>Kho Sách Giảm Giá</topicName>
                 <topicCode>sale</topicCode>
-                <url incrementParam="?page={i}" to="30">https://www.vinabook.com/kho-sach-giam-gia</url>
+                <url incrementParam="?page={i}" to="0">https://www.vinabook.com/kho-sach-giam-gia</url>
                 <fragmentXpath>//table[contains(@class, "template-products")]</fragmentXpath>
             </topic>
         </topics>
@@ -65,7 +65,7 @@
             <topic>
                 <topicName>Sách bán chạy</topicName>
                 <topicCode>bestSeller</topicCode>
-                <url incrementParam="p{i}?ismost=true" to="30">https://bookbuy.vn/sach-ban-chay/</url>
+                <url incrementParam="p{i}?ismost=true" to="0">https://bookbuy.vn/sach-ban-chay/</url>
                 <fragmentXpath>body/div[2]/div/div/div[2]/div[3]</fragmentXpath>
             </topic>
         </topics>

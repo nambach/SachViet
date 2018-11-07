@@ -14,6 +14,7 @@
                   <th>Authors</th>
                   <th>Price</th>
                   <th>Site</th>
+                  <th>Status</th>
               </tr>
           </thead>
           <tbody>
@@ -39,6 +40,9 @@
                   </td>
                   <td>
                       <a target="_blank" href="{link}"><xsl:value-of select="siteName"/></a>
+                  </td>
+                  <td>
+                      <xsl:value-of select="status"/>
                   </td>
               </tr>
           </xsl:for-each>

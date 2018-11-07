@@ -249,6 +249,9 @@ public class BookServiceImpl implements BookService {
         long end = System.currentTimeMillis();
         result.setTotalMillis(end - start);
 
+        //rawBooks are books that have just been crawled
+        result.setRawBooks(RawBook.convert(crawler.getResults()));
+
         return result;
     }
 

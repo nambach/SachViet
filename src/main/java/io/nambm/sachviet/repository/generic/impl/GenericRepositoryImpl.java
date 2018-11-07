@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 public abstract class GenericRepositoryImpl<T extends GenericEntity> implements GenericRepository<T> {
 
+    private static final int BATCH_SIZE = 10;
+
     public static SessionFactory getFactory() {
         return new Configuration().configure().buildSessionFactory();
     }
@@ -60,7 +62,7 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
 
             for (int i = 0; i < entities.size(); i++) {
                 session.save(entities.get(i));
-                if (i % 50 == 0) { // Same as the JDBC batch size
+                if (i % BATCH_SIZE == 0) { // Same as the JDBC batch size
                     //flush a batch of inserts and release memory:
                     session.flush();
                     session.clear();
@@ -79,7 +81,7 @@ public abstract class GenericRepositoryImpl<T extends GenericEntity> implements 
 
             for (int i = 0; i < entities.size(); i++) {
                 session.saveOrUpdate(entities.get(i));
-                if (i % 50 == 0) { // Same as the JDBC batch size
+                if (i % BATCH_SIZE == 0) { // Same as the JDBC batch size
                     //flush a batch of inserts and release memory:
                     session.flush();
                     session.clear();

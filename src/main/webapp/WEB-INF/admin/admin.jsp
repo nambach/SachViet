@@ -100,8 +100,8 @@
         <div class="horizontal-center" style="height: auto; padding: 60px 25px">
             <button class="button" id="btnCrawl">Cào dữ liệu</button>
             <button class="button" id="btnStopCrawl" disabled>Dừng</button>
-            <div class="crawling-pls-wait hidden" style="width: 100%; text-align: left; margin-top: 10px; padding-left: 28%;">
-                Xin chờ, việc cào có thể tốn vài phút <span class="dot-loading"></span>
+            <div class="crawling-pls-wait hidden" style="width: 100%; text-align: center; margin-top: 10px;">
+                Xin chờ, việc cào có thể tốn vài phút <p class="dot-loading"></p>
             </div>
             <div class="crawling-result hidden" style="width: 100%; text-align: center; margin-top: 10px">
                 Hoàn tất <br/>
